@@ -161,7 +161,6 @@ export class Lucky7euService {
             { mid: dataMid, gtype: gtype },
             {
               win: `${cardHighLow == 'Tie' ? 3 : win}`,
-              // win: `${win}`,
             },
           );
         }

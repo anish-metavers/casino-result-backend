@@ -109,7 +109,6 @@ export class DharamVeerService {
       for (let i = 0; i < cardNumbers.length; i++) {
         if (cardNumbers[i] == card) {
           cardRes = cardNumbers[i];
-          // console.log(cardRes);
           cardData = cardRes[0];
 
           for (let i = 0; i < cardType.length; i++) {
@@ -118,7 +117,6 @@ export class DharamVeerService {
 
               if (cardNumber == 'A' || cardNumber == 'J') {
                 cardHighLow = 'BARATI';
-                // console.log(cardHighLow);
               } else if (cardNumber == 'K' || cardNumber == 'Q') {
                 cardHighLow = 'DULHA DULHAN';
               }
@@ -127,16 +125,13 @@ export class DharamVeerService {
 
           if (cardRes.includes('CC') || cardRes.includes('SS')) {
             color = 'BLACK';
-            // console.log('BLACK');
           } else {
             color = 'RED';
-            // console.log('RED');
           }
 
           if (!Number(cardRes[0])) {
             if (cardRes.includes('Q')) {
               oddsEven = 'EVEN';
-              // console.log('EVEN');
             } else {
               if (
                 cardRes.includes('J') ||
@@ -144,19 +139,15 @@ export class DharamVeerService {
                 cardRes.includes('A')
               ) {
                 oddsEven = 'ODD';
-                // console.log('ODD');
               }
             }
           } else {
             if (cardRes[0] % 2 == 0) {
               oddsEven = 'EVEN';
-              // console.log('EVEN');
             } else if (cardRes.length == 4) {
               oddsEven = 'EVEN';
-              // console.log('EVEN');
             } else {
               oddsEven = 'ODD';
-              // console.log('ODD');
             }
           }
         }

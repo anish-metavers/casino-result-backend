@@ -108,7 +108,6 @@ export class amarAkbarAnthonyService {
       for (let i = 0; i < cardNumbers.length; i++) {
         if (cardNumbers[i] == card) {
           cardRes = cardNumbers[i];
-          // console.log(cardRes);
           cardData = cardRes[0];
 
           for (let i = 0; i < cardType.length; i++) {
@@ -117,32 +116,25 @@ export class amarAkbarAnthonyService {
 
               if (cardNumber == 'A') {
                 cardUnderOver = 'Under 7';
-                // console.log(cardUnderOver);
               } else if (cardNumber > '7' || cardNumber == '1') {
                 cardUnderOver = 'Over 7';
-                // console.log('Over 7');
               } else if (cardNumber == '7') {
                 cardUnderOver = 'Tie';
-                // console.log('Tie');
               } else {
                 cardUnderOver = 'Under 7';
-                // console.log('Under 7');
               }
             }
           }
 
           if (cardRes.includes('CC') || cardRes.includes('SS')) {
             color = 'Black';
-            // console.log('Black');
           } else {
             color = 'Red';
-            // console.log('Red');
           }
 
           if (!Number(cardRes[0])) {
             if (cardRes.includes('Q')) {
               oddsEven = 'Even';
-              // console.log('Even');
             } else {
               if (
                 cardRes.includes('J') ||
@@ -150,19 +142,15 @@ export class amarAkbarAnthonyService {
                 cardRes.includes('A')
               ) {
                 oddsEven = 'Odds';
-                // console.log('Odds');
               }
             }
           } else {
             if (cardRes[0] % 2 == 0) {
               oddsEven = 'Even';
-              // console.log('Even');
             } else if (cardRes.length == 4) {
               oddsEven = 'Even';
-              // console.log('Even');
             } else {
               oddsEven = 'Odds';
-              // console.log('Odds');
             }
           }
         }
