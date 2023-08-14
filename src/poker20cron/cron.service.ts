@@ -46,8 +46,8 @@ export class Poker20Service {
           sid.push(items[0].sid);
           const nation = sidStrings[1].split(',')[0];
           const nation2 = sidStrings[2].split(',')[0];
-          console.log('Nation 1 :',nation)
-          console.log('Nation 2 :',nation2)
+          // console.log('Nation 1 :',nation)
+          // console.log('Nation 2 :',nation2)
           sid.push(
             player1Sids.find((item, index) => item.nation == nation)?.sid,
           );
@@ -64,7 +64,7 @@ export class Poker20Service {
           sid.push(
             player1Sids.find((item, index) => item.nation == nation2)?.sid,
           );
-          console.log('sid :',sid);
+          // console.log('sid :',sid);
         }
       }
 
