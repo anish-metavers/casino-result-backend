@@ -9,10 +9,13 @@ import { DragonTigerModule } from './dragonTigerCron/cron.module';
 import { Poker20Module } from './poker20cron/cron.module';
 import { PokerModule } from './poker1daycron/cron.module';
 import { Poker6Module } from './poker6cron/cron.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/daymonddetailsresult'),
+    ConfigModule.forRoot(),
+    // MongooseModule.forRoot('mongodb://localhost:27017/daymonddetailsresult'),
+    MongooseModule.forRoot(process.env.DATABASE_URL),
     Teen20Module,
     Lucky7euModule,
     amarAkabrAnthonyModule,

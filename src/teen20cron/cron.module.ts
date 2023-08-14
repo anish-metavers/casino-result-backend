@@ -6,7 +6,8 @@ import { Teen20Service } from './cron.service';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017'),
+    // MongooseModule.forRoot('mongodb://localhost:27017'),
+    MongooseModule.forRoot(process.env.DATABASE_URL),
     ScheduleModule.forRoot(),
     MongooseModule.forFeature([
       { name: CasinoResult.name, schema: CasinoResultSchema },
