@@ -33,72 +33,129 @@ export class Lucky7euService {
         card = item.C1;
       }
 
-      let cardRes, color, oddsEven, cardHighLow, cardNumber, cardData;
+      const cardType = [
+        'A',
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        '1',
+        'J',
+        'Q',
+        'K',
+      ];
 
-      // for (let i = 0; i < cardNumbers.length; i++) {
-      //   if (cardNumbers[i] == card) {
-      //     cardRes = cardNumbers[i];
-      //     // console.log(cardRes);
-      //     cardData = cardRes[0];
+      const cardNumbers = [
+        'ASS',
+        '2SS',
+        '3SS',
+        '4SS',
+        '5SS',
+        '6SS',
+        '7SS',
+        '8SS',
+        '9SS',
+        '10SS',
+        'JSS',
+        'QSS',
+        'KSS',
+        'ADD',
+        '2DD',
+        '3DD',
+        '4DD',
+        '5DD',
+        '6DD',
+        '7DD',
+        '8DD',
+        '9DD',
+        '10DD',
+        'JDD',
+        'QDD',
+        'KDD',
+        'AHH',
+        '2HH',
+        '3HH',
+        '4HH',
+        '5HH',
+        '6HH',
+        '7HH',
+        '8HH',
+        '9HH',
+        '10HH',
+        'JHH',
+        'QHH',
+        'KHH',
+        'ACC',
+        '2CC',
+        '3CC',
+        '4CC',
+        '5CC',
+        '6CC',
+        '7CC',
+        '8CC',
+        '9CC',
+        '10CC',
+        'JCC',
+        'QCC',
+        'KCC',
+      ];
 
-      //     for (let i = 0; i < cardType.length; i++) {
-      //       if (cardRes[0] == cardType[i]) {
-      //         cardNumber = cardType[i];
+      let cardData, cardHighLow, oddsEven, cardRes, color, cardNumber, win;
 
-      //         if (cardNumber == 'A') {
-      //           cardHighLow = 'Low card';
-      //           // console.log(cardHighLow);
-      //         } else if (cardNumber > '7' || cardNumber == '1') {
-      //           cardHighLow = 'High card';
-      //           // console.log('High card');
-      //         } else if (cardNumber == '7') {
-      //           cardHighLow = 'Tie';
-      //           // console.log('Tie');
-      //         } else {
-      //           cardHighLow = 'Low card';
-      //           // console.log('Low card');
-      //         }
-      //       }
-      //     }
+      for (let i = 0; i < cardNumbers.length; i++) {
+        if (cardNumbers[i] == card) {
+          cardRes = cardNumbers[i];
+          cardData = cardRes[0];
 
-      //     if (cardRes.includes('CC') || cardRes.includes('SS')) {
-      //       color = 'Black';
-      //       // console.log('Black');
-      //     } else {
-      //       color = 'Red';
-      //       // console.log('Red');
-      //     }
+          for (let i = 0; i < cardType.length; i++) {
+            if (cardRes[0] == cardType[i]) {
+              cardNumber = cardType[i];
 
-      //     if (!Number(cardRes[0])) {
-      //       if (cardRes.includes('Q')) {
-      //         oddsEven = 'Even';
-      //         // console.log('Even');
-      //       } else {
-      //         if (
-      //           cardRes.includes('J') ||
-      //           cardRes.includes('K') ||
-      //           cardRes.includes('A')
-      //         ) {
-      //           oddsEven = 'Odds';
-      //           // console.log('Odds');
-      //         }
-      //       }
-      //     } else {
-      //       if (cardRes[0] % 2 == 0) {
-      //         oddsEven = 'Even';
-      //         // console.log('Even');
-      //       } else if (cardRes.length == 4) {
-      //         oddsEven = 'Even';
-      //         // console.log('Even');
-      //       } else {
-      //         oddsEven = 'Odds';
-      //         // console.log('Odds');
-      //       }
-      //     }
-      //   }
-      // }
+              if (cardNumber == 'A') {
+                cardHighLow = 'Low card';
+              } else if (cardNumber > '7' || cardNumber == '1') {
+                cardHighLow = 'High card';
+              } else if (cardNumber == '7') {
+                cardHighLow = 'Tie';
+              } else {
+                cardHighLow = 'Low card';
+              }
+            }
+          }
 
-      let win;
+          if (cardRes.includes('CC') || cardRes.includes('SS')) {
+            color = 'Black';
+          } else {
+            color = 'Red';
+          }
+
+          if (!Number(cardRes[0])) {
+            if (cardRes.includes('Q')) {
+              oddsEven = 'Even';
+            } else {
+              if (
+                cardRes.includes('J') ||
+                cardRes.includes('K') ||
+                cardRes.includes('A')
+              ) {
+                oddsEven = 'Odds';
+              }
+            }
+          } else {
+            if (cardRes[0] % 2 == 0) {
+              oddsEven = 'Even';
+            } else if (cardRes.length == 4) {
+              oddsEven = 'Even';
+            } else {
+              oddsEven = 'Odds';
+            }
+          }
+        }
+      }
 
       const containMid = await this.casinoresultModel.findOneAndUpdate(
         { mid },
@@ -120,28 +177,30 @@ export class Lucky7euService {
         },
       );
 
-      if (!containMid) {
-        response = {
-          cards: card,
-          desc: `${color} | ${oddsEven} | ${cardHighLow} | card ${
-            cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
-          }`,
-          gtype: gtype,
-          sid: `${
-            cardHighLow == 'Low card'
-              ? 1
-              : cardHighLow == 'High card'
-              ? 2
-              : cardHighLow == 'Tie'
-              ? 3
-              : cardHighLow
-          }`,
-          mid: mid,
-          win: `${win}`,
-        };
+      if (mid != 0) {
+        if (!containMid) {
+          response = {
+            cards: card,
+            desc: `${color} | ${oddsEven} | ${cardHighLow} | card ${
+              cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
+            }`,
+            gtype: gtype,
+            sid: `${
+              cardHighLow == 'Low card'
+                ? 1
+                : cardHighLow == 'High card'
+                ? 2
+                : cardHighLow == 'Tie'
+                ? 3
+                : cardHighLow
+            }`,
+            mid: mid,
+            win: `${win}`,
+          };
 
-        const lucky7Response = new this.casinoresultModel(response);
-        await lucky7Response.save();
+          const lucky7Response = new this.casinoresultModel(response);
+          await lucky7Response.save();
+        }
       }
 
       //result set

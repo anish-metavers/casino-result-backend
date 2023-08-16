@@ -49,17 +49,19 @@ export class Teen20Service {
         },
       );
 
-      if (!teen20ContainMid) {
-        response = {
-          cards: cards,
-          desc: '',
-          gtype: gType,
-          sid: sid.join(','),
-          mid: mid,
-          win: `${win}`,
-        };
-        const teen20Response = new this.casinoresultModel(response);
-        await teen20Response.save();
+      if (mid != 0) {
+        if (!teen20ContainMid) {
+          response = {
+            cards: cards,
+            desc: '',
+            gtype: gType,
+            sid: sid.join(','),
+            mid: mid,
+            win: `${win}`,
+          };
+          const teen20Response = new this.casinoresultModel(response);
+          await teen20Response.save();
+        }
       }
 
       // set result

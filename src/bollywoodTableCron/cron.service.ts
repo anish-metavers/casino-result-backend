@@ -7,8 +7,8 @@ import { CasinoResult, CasinoResultDocument } from 'model/t_casino_result';
 import { Model } from 'mongoose';
 
 @Injectable()
-export class DharamVeerService {
-  private readonly logger = new Logger(DharamVeerService.name);
+export class BollywoodTableService {
+  private readonly logger = new Logger(BollywoodTableService.name);
 
   constructor(
     @InjectModel(CasinoResult.name)
@@ -166,19 +166,21 @@ export class DharamVeerService {
         },
       );
 
-      if (!containMid) {
-        response = {
-          cards: card,
-          desc: `${color} | ${oddsEven} | ${cardHighLow} | CARD ${
-            cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
-          }`,
-          gtype: gtype,
-          sid: '',
-          mid: mid,
-          win: `${win}`,
-        };
-        const bTableResponse = new this.casinoresultModel(response);
-        await bTableResponse.save();
+      if (mid != 0) {
+        if (!containMid) {
+          response = {
+            cards: card,
+            desc: `${color} | ${oddsEven} | ${cardHighLow} | CARD ${
+              cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
+            }`,
+            gtype: gtype,
+            sid: '',
+            mid: mid,
+            win: `${win}`,
+          };
+          const bTableResponse = new this.casinoresultModel(response);
+          await bTableResponse.save();
+        }
       }
 
       //result set

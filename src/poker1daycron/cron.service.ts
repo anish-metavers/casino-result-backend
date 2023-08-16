@@ -78,17 +78,19 @@ export class PokerService {
           win: `${win}`,
         },
       );
-      if (!containMid) {
-        response = {
-          cards: card,
-          desc: `${desc}`,
-          gtype: gtype,
-          sid: sid.join(','),
-          mid: mid,
-          win: `${win}`,
-        };
-        const poker20Response = new this.casinoresultModel(response);
-        await poker20Response.save();
+      if (mid != 0) {
+        if (!containMid) {
+          response = {
+            cards: card,
+            desc: `${desc}`,
+            gtype: gtype,
+            sid: sid.join(','),
+            mid: mid,
+            win: `${win}`,
+          };
+          const poker20Response = new this.casinoresultModel(response);
+          await poker20Response.save();
+        }
       }
 
       //result set

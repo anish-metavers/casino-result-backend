@@ -91,20 +91,22 @@ export class DragonTigerService {
         },
       );
 
-      if (!containMid) {
-        response = {
-          cards: cards,
-          desc: `${cardCompair}*${color1}|${oddEvenCardFirst}|Card ${C1.charAt(
-            0,
-          )}*${color2}|${oddEvenCardSecond}|Card ${C2.charAt(0)}`,
-          gtype: gtype,
-          sid: '',
-          mid: mid,
-          win: `${win}`,
-        };
+      if (mid != 0) {
+        if (!containMid) {
+          response = {
+            cards: cards,
+            desc: `${cardCompair}*${color1}|${oddEvenCardFirst}|Card ${C1.charAt(
+              0,
+            )}*${color2}|${oddEvenCardSecond}|Card ${C2.charAt(0)}`,
+            gtype: gtype,
+            sid: '',
+            mid: mid,
+            win: `${win}`,
+          };
 
-        const DragonTigerResponse = new this.casinoresultModel(response);
-        await DragonTigerResponse.save();
+          const DragonTigerResponse = new this.casinoresultModel(response);
+          await DragonTigerResponse.save();
+        }
       }
 
       //result set

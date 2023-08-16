@@ -47,17 +47,19 @@ export class TeenService {
         },
       );
 
-      if (!containMid) {
-        response = {
-          cards: cards.join(','),
-          desc: '',
-          gtype: gType,
-          sid: '',
-          mid: mid,
-          win: `${win}`,
-        };
-        const teenResponse = new this.casinoresultModel(response);
-        await teenResponse.save();
+      if (mid != 0) {
+        if (!containMid) {
+          response = {
+            cards: cards.join(','),
+            desc: '',
+            gtype: gType,
+            sid: '',
+            mid: mid,
+            win: `${win}`,
+          };
+          const teenResponse = new this.casinoresultModel(response);
+          await teenResponse.save();
+        }
       }
 
       //set win result
