@@ -224,12 +224,12 @@ export class BollywoodTableService {
           if (data)
             await this.casinoresultModel.updateOne(
               { mid: dataMid },
-              { desc: `${winnerName} | ${data.desc}` },
+              { desc: `${winnerName} || ${data.desc}` },
             );
         }
       }
 
-      this.logger.log('Dharam Veer cron is running');
+      this.logger.log('Bollywood table cron is running');
     } catch (error) {
       console.log(error);
     }
