@@ -2,7 +2,6 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
-// import { DharamVeer, DharamVeerDocument } from 'model/t_dharamveer';
 import { CasinoResult, CasinoResultDocument } from 'model/t_casino_result';
 import { Model } from 'mongoose';
 
