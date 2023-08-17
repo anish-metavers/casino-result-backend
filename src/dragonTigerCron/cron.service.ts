@@ -14,7 +14,7 @@ export class DragonTigerService {
     private casinoresultModel: Model<CasinoResultDocument>,
   ) {}
 
-  @Cron('*/1 * * * * *')
+  @Cron('*/5 * * * * *')
   async handleCron() {
     const dragonTigerUrl = 'http://185.180.223.49:9002/data/dt20';
     const dragonTigerWinResultUrl = 'http://185.180.223.49:9002/result/dt20';
@@ -81,7 +81,7 @@ export class DragonTigerService {
       }
 
       const containMid = await this.casinoresultModel.findOneAndUpdate(
-        { mid },
+        { mid, gtype },
         {
           cards: cards,
           win: `${win}`,

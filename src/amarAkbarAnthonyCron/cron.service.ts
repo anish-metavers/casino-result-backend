@@ -14,7 +14,7 @@ export class amarAkbarAnthonyService {
     private casinoresultModel: Model<CasinoResultDocument>,
   ) {}
 
-  @Cron('*/1 * * * * *')
+  @Cron('*/5 * * * * *')
   async handleCron() {
     const aaaUrl = 'http://185.180.223.49:9002/data/aaa';
     const aaaWinResultUrl = 'http://185.180.223.49:9002/result/aaa';
@@ -159,7 +159,7 @@ export class amarAkbarAnthonyService {
       let win, winnerName;
 
       const containMid = await this.casinoresultModel.findOneAndUpdate(
-        { mid },
+        { mid, gtype },
         {
           cards: card,
           win: `${win}`,
@@ -240,7 +240,6 @@ export class amarAkbarAnthonyService {
             );
         }
       }
-
       this.logger.verbose('Amar akbar anthony cron is running');
     } catch (error) {
       console.error(error);

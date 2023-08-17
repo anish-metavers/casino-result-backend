@@ -14,7 +14,7 @@ export class BollywoodTableService {
     private casinoresultModel: Model<CasinoResultDocument>,
   ) {}
 
-  @Cron('*/1 * * * * *')
+  @Cron('*/5 * * * * *')
   async handleCron() {
     const bTableUrl = 'http://185.180.223.49:9002/data/btable';
     const bTableWinResultUrl = 'http://185.180.223.49:9002/result/btable';
@@ -155,7 +155,7 @@ export class BollywoodTableService {
       let win, winnerName;
 
       const containMid = await this.casinoresultModel.findOneAndUpdate(
-        { mid },
+        { mid, gtype },
         {
           cards: card,
           win: `${win}`,
@@ -224,7 +224,7 @@ export class BollywoodTableService {
           if (data)
             await this.casinoresultModel.updateOne(
               { mid: dataMid },
-              { desc: `${winnerName} || ${data.desc}` },
+              { desc: `${winnerName} | ${data.desc}` },
             );
         }
       }

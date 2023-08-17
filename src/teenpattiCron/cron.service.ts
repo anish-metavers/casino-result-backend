@@ -13,7 +13,7 @@ export class TeenpattiService {
     @InjectModel(CasinoResult.name)
     private casinoresultModel: Model<CasinoResultDocument>,
   ) {}
-  @Cron('*/1 * * * * *')
+  @Cron('*/5 * * * * *')
   async handleCron() {
     const teenUrl = 'http://185.180.223.49:9002/data/Teen';
     const teenWinResultUrl = 'http://185.180.223.49:9002/result/Teen';
@@ -38,7 +38,7 @@ export class TeenpattiService {
       }
 
       const containMid = await this.casinoresultModel.findOneAndUpdate(
-        { mid },
+        { mid, gType },
         {
           cards: cards.join(','),
           win: `${win}`,

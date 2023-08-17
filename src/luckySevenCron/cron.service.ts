@@ -14,7 +14,7 @@ export class LuckySevenService {
     private casinoresultModel: Model<CasinoResultDocument>,
   ) {}
 
-  @Cron('*/1 * * * * *')
+  @Cron('*/5 * * * * *')
   async handleCron() {
     const lucky7Url = 'http://185.180.223.49:9002/Data/lucky7eu';
     const lucky7WinResultUrl = 'http://185.180.223.49:9002/result/lucky7eu';
@@ -33,7 +33,7 @@ export class LuckySevenService {
         card = item.C1;
       }
 
-      const cardType = [
+      const cardTypeData = [
         'A',
         '2',
         '3',
@@ -49,7 +49,7 @@ export class LuckySevenService {
         'K',
       ];
 
-      const cardNumbers = [
+      const cardNumberData = [
         'ASS',
         '2SS',
         '3SS',
@@ -106,14 +106,14 @@ export class LuckySevenService {
 
       let cardData, cardHighLow, oddsEven, cardRes, color, cardNumber, win;
 
-      for (let i = 0; i < cardNumbers.length; i++) {
-        if (cardNumbers[i] == card) {
-          cardRes = cardNumbers[i];
+      for (let i = 0; i < cardNumberData.length; i++) {
+        if (cardNumberData[i] == card) {
+          cardRes = cardNumberData[i];
           cardData = cardRes[0];
 
-          for (let i = 0; i < cardType.length; i++) {
-            if (cardRes[0] == cardType[i]) {
-              cardNumber = cardType[i];
+          for (let i = 0; i < cardTypeData.length; i++) {
+            if (cardRes[0] == cardTypeData[i]) {
+              cardNumber = cardTypeData[i];
 
               if (cardNumber == 'A') {
                 cardHighLow = 'Low card';
@@ -173,7 +173,7 @@ export class LuckySevenService {
         }`,
       };
       const containMid = await this.casinoresultModel.findOneAndUpdate(
-        { mid },
+        { mid, gtype },
         response,
       );
       // console.log('cardset ', mid, card, containMid, response);
@@ -216,7 +216,7 @@ export class LuckySevenService {
           resultMid = wins.mid;
           if (resultMid == dataMid) {
             win = wins.result;
-            console.log(win, 'win');
+            // console.log(win,mid,gtype, 'win');
           }
           await this.casinoresultModel.findOneAndUpdate(
             { mid: dataMid, gtype: gtype },

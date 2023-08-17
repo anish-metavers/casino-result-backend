@@ -14,7 +14,7 @@ export class TeenTwentyService {
     private casinoresultModel: Model<CasinoResultDocument>,
   ) {}
 
-  @Cron('*/1 * * * * *')
+  @Cron('*/5 * * * * *')
   async handleCron() {
     const teen20WinResultUrl = 'http://185.180.223.49:9002/result/teen20';
     const teen20DataUrl = 'http://185.180.223.49:9002/data/teen20';
@@ -41,7 +41,7 @@ export class TeenTwentyService {
       });
 
       const teen20ContainMid = await this.casinoresultModel.findOneAndUpdate(
-        { mid },
+        { mid,gType },
         {
           cards: cards,
           win: `${win}`,
