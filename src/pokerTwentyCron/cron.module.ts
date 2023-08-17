@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { CasinoResult, CasinoResultSchema } from 'model/t_casino_result';
-import { Poker20Service } from './cron.service';
+import { PokerTwentyService } from './cron.service';
 
 @Module({
   imports: [
@@ -13,6 +13,6 @@ import { Poker20Service } from './cron.service';
       { name: CasinoResult.name, schema: CasinoResultSchema },
     ]),
   ],
-  providers: [Poker20Service],
+  providers: [PokerTwentyService],
 })
-export class Poker20Module {}
+export class PokerTwentyModule {}

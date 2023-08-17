@@ -6,8 +6,8 @@ import { CasinoResult, CasinoResultDocument } from 'model/t_casino_result';
 import { Model } from 'mongoose';
 
 @Injectable()
-export class Poker20Service {
-  private readonly logger = new Logger(Poker20Service.name);
+export class PokerTwentyService {
+  private readonly logger = new Logger(PokerTwentyService.name);
 
   constructor(
     @InjectModel(CasinoResult.name)
