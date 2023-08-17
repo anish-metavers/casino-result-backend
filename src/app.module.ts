@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { Teen20Module } from './teen20Cron/cron.module';
+import { TeenTwentyModule } from './teenTwentyCron/cron.module';
 import { Lucky7euModule } from './lucky7euCron/cron.module';
 import { amarAkabrAnthonyModule } from './amarAkbarAnthonyCron/cron.module';
 import { BollywoodTableModule } from './bollywoodTableCron/cron.module';
@@ -16,7 +16,7 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot(),
     // MongooseModule.forRoot('mongodb://localhost:27017/daymonddetailsresult'),
     MongooseModule.forRoot(process.env.DATABASE_URL),
-    Teen20Module,
+    TeenTwentyModule,
     Lucky7euModule,
     amarAkabrAnthonyModule,
     BollywoodTableModule,
