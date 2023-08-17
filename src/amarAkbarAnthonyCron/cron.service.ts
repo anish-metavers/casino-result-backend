@@ -14,7 +14,7 @@ export class amarAkbarAnthonyService {
     private casinoresultModel: Model<CasinoResultDocument>,
   ) {}
 
-  @Cron('*/5 * * * * *')
+  @Cron('*/1 * * * * *')
   async handleCron() {
     const aaaUrl = 'http://185.180.223.49:9002/data/aaa';
     const aaaWinResultUrl = 'http://185.180.223.49:9002/result/aaa';

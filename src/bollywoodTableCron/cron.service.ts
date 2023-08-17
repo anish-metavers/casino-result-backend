@@ -14,7 +14,7 @@ export class BollywoodTableService {
     private casinoresultModel: Model<CasinoResultDocument>,
   ) {}
 
-  @Cron('*/5 * * * * *')
+  @Cron('*/1 * * * * *')
   async handleCron() {
     const bTableUrl = 'http://185.180.223.49:9002/data/btable';
     const bTableWinResultUrl = 'http://185.180.223.49:9002/result/btable';

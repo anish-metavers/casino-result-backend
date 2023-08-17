@@ -14,7 +14,7 @@ export class LuckySevenService {
     private casinoresultModel: Model<CasinoResultDocument>,
   ) {}
 
-  @Cron('*/5 * * * * *')
+  @Cron('*/1 * * * * *')
   async handleCron() {
     const lucky7Url = 'http://185.180.223.49:9002/Data/lucky7eu';
     const lucky7WinResultUrl = 'http://185.180.223.49:9002/result/lucky7eu';
@@ -156,26 +156,27 @@ export class LuckySevenService {
           }
         }
       }
-
+      response = {
+        cards: card,
+        win: `${win}`,
+        desc: `${color} | ${oddsEven} | ${cardHighLow} | card ${
+          cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
+        }`,
+        sid: `${
+          cardHighLow == 'Low card'
+            ? 1
+            : cardHighLow == 'High card'
+            ? 2
+            : cardHighLow == 'Tie'
+            ? 3
+            : cardHighLow
+        }`,
+      };
       const containMid = await this.casinoresultModel.findOneAndUpdate(
         { mid },
-        {
-          cards: card,
-          win: `${win}`,
-          desc: `${color} | ${oddsEven} | ${cardHighLow} | card ${
-            cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
-          }`,
-          sid: `${
-            cardHighLow == 'Low card'
-              ? 1
-              : cardHighLow == 'High card'
-              ? 2
-              : cardHighLow == 'Tie'
-              ? 3
-              : cardHighLow
-          }`,
-        },
+        response,
       );
+      // console.log('cardset ', mid, card, containMid, response);
 
       if (mid != 0) {
         if (!containMid) {
@@ -215,11 +216,12 @@ export class LuckySevenService {
           resultMid = wins.mid;
           if (resultMid == dataMid) {
             win = wins.result;
+            console.log(win, 'win');
           }
           await this.casinoresultModel.findOneAndUpdate(
             { mid: dataMid, gtype: gtype },
             {
-              win: `${cardHighLow == 'Tie' ? 3 : win}`,
+              win: `${win}`,
             },
           );
         }

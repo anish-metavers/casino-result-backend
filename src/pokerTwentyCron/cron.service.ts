@@ -14,7 +14,7 @@ export class PokerTwentyService {
     private casinoresultModel: Model<CasinoResultDocument>,
   ) {}
 
-  @Cron('*/5 * * * * *')
+  @Cron('*/1 * * * * *')
   async handleCron() {
     const poker20Url = 'http://185.180.223.49:9002/data/poker20';
     const poker20WinResultUrl = 'http://185.180.223.49:9002/result/poker20';
