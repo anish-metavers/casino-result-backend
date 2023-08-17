@@ -7,7 +7,7 @@ import { BollywoodTableModule } from './bollywoodTableCron/cron.module';
 import { TeenModule } from './teenCron/cron.module';
 import { DragonTigerModule } from './dragonTigerCron/cron.module';
 import { PokerTwentyModule } from './pokerTwentyCron/cron.module';
-import { PokerModule } from './pokerOneDayCron/cron.module';
+import { PokerOneDayModule } from './pokerOneDayCron/cron.module';
 import { PokerSixModule } from './pokerSixCron/cron.module';
 import { ConfigModule } from '@nestjs/config';
 
@@ -23,7 +23,7 @@ import { ConfigModule } from '@nestjs/config';
     TeenModule,
     DragonTigerModule,
     PokerTwentyModule,
-    PokerModule,
+    PokerOneDayModule,
     PokerSixModule,
   ],
 })
