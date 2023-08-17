@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
-import { TeenService } from './cron.service';
+import { TeenpattiService } from './cron.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CasinoResult, CasinoResultSchema } from 'model/t_casino_result';
 @Module({
@@ -12,6 +12,6 @@ import { CasinoResult, CasinoResultSchema } from 'model/t_casino_result';
       { name: CasinoResult.name, schema: CasinoResultSchema },
     ]),
   ],
-  providers: [TeenService],
+  providers: [TeenpattiService],
 })
-export class TeenModule {}
+export class TeenpattiModule {}

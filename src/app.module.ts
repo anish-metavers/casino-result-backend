@@ -4,7 +4,7 @@ import { TeenTwentyModule } from './teenTwentyCron/cron.module';
 import { LuckySevenModule } from './luckySevenCron/cron.module';
 import { amarAkabrAnthonyModule } from './amarAkbarAnthonyCron/cron.module';
 import { BollywoodTableModule } from './bollywoodTableCron/cron.module';
-import { TeenModule } from './teenCron/cron.module';
+import { TeenpattiModule } from './teenpattiCron/cron.module';
 import { DragonTigerModule } from './dragonTigerCron/cron.module';
 import { PokerTwentyModule } from './pokerTwentyCron/cron.module';
 import { PokerOneDayModule } from './pokerOneDayCron/cron.module';
@@ -20,7 +20,7 @@ import { ConfigModule } from '@nestjs/config';
     LuckySevenModule,
     amarAkabrAnthonyModule,
     BollywoodTableModule,
-    TeenModule,
+    TeenpattiModule,
     DragonTigerModule,
     PokerTwentyModule,
     PokerOneDayModule,
