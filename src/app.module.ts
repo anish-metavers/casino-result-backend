@@ -20,11 +20,11 @@ import { ConfigModule } from '@nestjs/config';
     amarAkabrAnthonyModule,
     BollywoodTableModule,
     LuckySevenModule,
-    TeenpattiModule,
-    DragonTigerModule,
-    PokerTwentyModule,
-    PokerOneDayModule,
-    PokerSixModule,
+    // TeenpattiModule,
+    // DragonTigerModule,
+    // PokerTwentyModule,
+    // PokerOneDayModule,
+    // PokerSixModule,
   ],
 })
 export class AppModule {}
