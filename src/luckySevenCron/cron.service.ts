@@ -84,7 +84,7 @@ export class LuckySevenService {
     private casinoresultModel: Model<CasinoResultDocument>,
   ) {}
 
-  @Cron('*/1 * * * * *')
+  @Cron('*/5 * * * * *')
   async handleCron() {
     const lucky7Url = 'http://185.180.223.49:9002/Data/lucky7eu';
     const lucky7WinResultUrl = 'http://185.180.223.49:9002/result/lucky7eu';
