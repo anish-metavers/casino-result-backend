@@ -17,7 +17,7 @@ export class CasinoResult {
   @Prop()
   gtype: string;
 
-  @Prop()
+  @Prop({ unique: true })
   mid: string;
 
   @Prop()
