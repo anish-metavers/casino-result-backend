@@ -176,7 +176,6 @@ export class LuckySevenService {
         { mid, gtype },
         response,
       );
-      // console.log('cardset ', mid, card, containMid, response);
 
       if (mid != 0) {
         if (!containMid) {
@@ -216,7 +215,6 @@ export class LuckySevenService {
           resultMid = wins.mid;
           if (resultMid == dataMid) {
             win = wins.result;
-            // console.log(win,mid,gtype, 'win');
           }
           await this.casinoresultModel.findOneAndUpdate(
             { mid: dataMid, gtype: gtype },
