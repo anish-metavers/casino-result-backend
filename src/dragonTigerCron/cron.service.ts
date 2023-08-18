@@ -123,7 +123,7 @@ export class DragonTigerService {
             win = wins.result;
           }
           await this.casinoresultModel.findOneAndUpdate(
-            { mid: dataMid },
+            { mid: dataMid, win: 'undefined', gtype },
             {
               win: `${win}`,
             },
@@ -141,7 +141,6 @@ export class DragonTigerService {
             mid: dataMid,
             gtype: gtype,
           });
-
           if (data)
             await this.casinoresultModel.updateOne(
               { mid: dataMid },

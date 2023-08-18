@@ -14,7 +14,7 @@ export class TeenTwentyService {
     private casinoresultModel: Model<CasinoResultDocument>,
   ) {}
 
-  @Cron('*/5 * * * * *')
+  @Cron('*/1 * * * * *')
   async handleCron() {
     const teen20WinResultUrl = 'http://185.180.223.49:9002/result/teen20';
     const teen20DataUrl = 'http://185.180.223.49:9002/data/teen20';
@@ -41,7 +41,7 @@ export class TeenTwentyService {
       });
 
       const teen20ContainMid = await this.casinoresultModel.findOneAndUpdate(
-        { mid,gType },
+        { mid, gtype: gType },
         {
           cards: cards,
           win: `${win}`,
@@ -67,6 +67,7 @@ export class TeenTwentyService {
       // set result
       const teen20SetResult = await this.casinoresultModel.find({
         win: 'undefined',
+        gtype: gType,
       });
 
       let teen20DataMid, teen20ResultMid;
@@ -76,17 +77,16 @@ export class TeenTwentyService {
           teen20ResultMid = wins.mid;
           if (teen20DataMid == teen20ResultMid) {
             win = wins.result;
+            await this.casinoresultModel.findOneAndUpdate(
+              {
+                mid: teen20DataMid,
+                gtype: gType,
+              },
+              {
+                win: `${win}`,
+              },
+            );
           }
-
-          await this.casinoresultModel.findOneAndUpdate(
-            {
-              mid: teen20DataMid,
-              gtype: gType,
-            },
-            {
-              win: `${win}`,
-            },
-          );
         }
       }
 

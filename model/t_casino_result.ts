@@ -27,4 +27,6 @@ export class CasinoResult {
   win: string;
 }
 
-export const CasinoResultSchema = SchemaFactory.createForClass(CasinoResult);
+const CasinoResultSchema = SchemaFactory.createForClass(CasinoResult);
+CasinoResultSchema.index({ gtype: 1, mid: 1 }, { unique: true });
+export { CasinoResultSchema };

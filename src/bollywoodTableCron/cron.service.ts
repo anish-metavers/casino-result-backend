@@ -5,6 +5,76 @@ import axios from 'axios';
 import { CasinoResult, CasinoResultDocument } from 'model/t_casino_result';
 import { Model } from 'mongoose';
 
+const cardType = [
+  'A',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '1',
+  'J',
+  'Q',
+  'K',
+];
+
+const cardNumbers = [
+  'ASS',
+  '2SS',
+  '3SS',
+  '4SS',
+  '5SS',
+  '6SS',
+  '7SS',
+  '8SS',
+  '9SS',
+  '10SS',
+  'JSS',
+  'QSS',
+  'KSS',
+  'ADD',
+  '2DD',
+  '3DD',
+  '4DD',
+  '5DD',
+  '6DD',
+  '7DD',
+  '8DD',
+  '9DD',
+  '10DD',
+  'JDD',
+  'QDD',
+  'KDD',
+  'AHH',
+  '2HH',
+  '3HH',
+  '4HH',
+  '5HH',
+  '6HH',
+  '7HH',
+  '8HH',
+  '9HH',
+  '10HH',
+  'JHH',
+  'QHH',
+  'KHH',
+  'ACC',
+  '2CC',
+  '3CC',
+  '4CC',
+  '5CC',
+  '6CC',
+  '7CC',
+  '8CC',
+  '9CC',
+  '10CC',
+  'JCC',
+  'QCC',
+  'KCC',
+];
 @Injectable()
 export class BollywoodTableService {
   private readonly logger = new Logger(BollywoodTableService.name);
@@ -14,7 +84,7 @@ export class BollywoodTableService {
     private casinoresultModel: Model<CasinoResultDocument>,
   ) {}
 
-  @Cron('*/5 * * * * *')
+  @Cron('*/1 * * * * *')
   async handleCron() {
     const bTableUrl = 'http://185.180.223.49:9002/data/btable';
     const bTableWinResultUrl = 'http://185.180.223.49:9002/result/btable';
@@ -31,80 +101,7 @@ export class BollywoodTableService {
         gtype = item.gtype;
         card = item.C1;
       }
-
-      const cardType = [
-        'A',
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-        '8',
-        '9',
-        '1',
-        'J',
-        'Q',
-        'K',
-      ];
-
-      const cardNumbers = [
-        'ASS',
-        '2SS',
-        '3SS',
-        '4SS',
-        '5SS',
-        '6SS',
-        '7SS',
-        '8SS',
-        '9SS',
-        '10SS',
-        'JSS',
-        'QSS',
-        'KSS',
-        'ADD',
-        '2DD',
-        '3DD',
-        '4DD',
-        '5DD',
-        '6DD',
-        '7DD',
-        '8DD',
-        '9DD',
-        '10DD',
-        'JDD',
-        'QDD',
-        'KDD',
-        'AHH',
-        '2HH',
-        '3HH',
-        '4HH',
-        '5HH',
-        '6HH',
-        '7HH',
-        '8HH',
-        '9HH',
-        '10HH',
-        'JHH',
-        'QHH',
-        'KHH',
-        'ACC',
-        '2CC',
-        '3CC',
-        '4CC',
-        '5CC',
-        '6CC',
-        '7CC',
-        '8CC',
-        '9CC',
-        '10CC',
-        'JCC',
-        'QCC',
-        'KCC',
-      ];
-
       let cardRes, color, oddsEven, cardHighLow, cardNumber, cardData;
-
       for (let i = 0; i < cardNumbers.length; i++) {
         if (cardNumbers[i] == card) {
           cardRes = cardNumbers[i];
@@ -196,7 +193,7 @@ export class BollywoodTableService {
             win = wins.result;
           }
           await this.casinoresultModel.findOneAndUpdate(
-            { mid: dataMid },
+            { mid: dataMid, gtype },
             {
               win: `${win}`,
             },
@@ -223,7 +220,7 @@ export class BollywoodTableService {
 
           if (data)
             await this.casinoresultModel.updateOne(
-              { mid: dataMid },
+              { mid: dataMid, gtype },
               { desc: `${winnerName} | ${data.desc}` },
             );
         }

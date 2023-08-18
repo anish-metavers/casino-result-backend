@@ -5,6 +5,76 @@ import axios from 'axios';
 import { Model } from 'mongoose';
 import { CasinoResult, CasinoResultDocument } from 'model/t_casino_result';
 
+const cardType = [
+  'A',
+  '2',
+  '3',
+  '4',
+  '5',
+  '6',
+  '7',
+  '8',
+  '9',
+  '1',
+  'J',
+  'Q',
+  'K',
+];
+
+const cardNumbers = [
+  'ASS',
+  '2SS',
+  '3SS',
+  '4SS',
+  '5SS',
+  '6SS',
+  '7SS',
+  '8SS',
+  '9SS',
+  '10SS',
+  'JSS',
+  'QSS',
+  'KSS',
+  'ADD',
+  '2DD',
+  '3DD',
+  '4DD',
+  '5DD',
+  '6DD',
+  '7DD',
+  '8DD',
+  '9DD',
+  '10DD',
+  'JDD',
+  'QDD',
+  'KDD',
+  'AHH',
+  '2HH',
+  '3HH',
+  '4HH',
+  '5HH',
+  '6HH',
+  '7HH',
+  '8HH',
+  '9HH',
+  '10HH',
+  'JHH',
+  'QHH',
+  'KHH',
+  'ACC',
+  '2CC',
+  '3CC',
+  '4CC',
+  '5CC',
+  '6CC',
+  '7CC',
+  '8CC',
+  '9CC',
+  '10CC',
+  'JCC',
+  'QCC',
+  'KCC',
+];
 @Injectable()
 export class amarAkbarAnthonyService {
   private readonly logger = new Logger(amarAkbarAnthonyService.name);
@@ -14,7 +84,7 @@ export class amarAkbarAnthonyService {
     private casinoresultModel: Model<CasinoResultDocument>,
   ) {}
 
-  @Cron('*/5 * * * * *')
+  @Cron('*/1 * * * * *')
   async handleCron() {
     const aaaUrl = 'http://185.180.223.49:9002/data/aaa';
     const aaaWinResultUrl = 'http://185.180.223.49:9002/result/aaa';
@@ -31,77 +101,6 @@ export class amarAkbarAnthonyService {
         gtype = item.gtype;
         card = item.C1;
       }
-
-      const cardType = [
-        'A',
-        '2',
-        '3',
-        '4',
-        '5',
-        '6',
-        '7',
-        '8',
-        '9',
-        '1',
-        'J',
-        'Q',
-        'K',
-      ];
-
-      const cardNumbers = [
-        'ASS',
-        '2SS',
-        '3SS',
-        '4SS',
-        '5SS',
-        '6SS',
-        '7SS',
-        '8SS',
-        '9SS',
-        '10SS',
-        'JSS',
-        'QSS',
-        'KSS',
-        'ADD',
-        '2DD',
-        '3DD',
-        '4DD',
-        '5DD',
-        '6DD',
-        '7DD',
-        '8DD',
-        '9DD',
-        '10DD',
-        'JDD',
-        'QDD',
-        'KDD',
-        'AHH',
-        '2HH',
-        '3HH',
-        '4HH',
-        '5HH',
-        '6HH',
-        '7HH',
-        '8HH',
-        '9HH',
-        '10HH',
-        'JHH',
-        'QHH',
-        'KHH',
-        'ACC',
-        '2CC',
-        '3CC',
-        '4CC',
-        '5CC',
-        '6CC',
-        '7CC',
-        '8CC',
-        '9CC',
-        '10CC',
-        'JCC',
-        'QCC',
-        'KCC',
-      ];
 
       let cardRes, color, oddsEven, cardUnderOver, cardNumber, cardData;
 
@@ -205,6 +204,7 @@ export class amarAkbarAnthonyService {
       //result set
       const setResult = await this.casinoresultModel.find({
         win: 'undefined',
+        gtype,
       });
 
       let dataMid, resultMid;
@@ -214,13 +214,13 @@ export class amarAkbarAnthonyService {
           resultMid = wins.mid;
           if (resultMid == dataMid) {
             win = wins.result;
+            await this.casinoresultModel.findOneAndUpdate(
+              { mid: dataMid, gtype },
+              {
+                win: `${win}`,
+              },
+            );
           }
-          await this.casinoresultModel.findOneAndUpdate(
-            { mid: dataMid },
-            {
-              win: `${win}`,
-            },
-          );
 
           if (win == '1') {
             winnerName = 'Amar';
