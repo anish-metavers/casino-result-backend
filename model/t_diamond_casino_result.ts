@@ -5,7 +5,7 @@ export type CasinoResultDocument = HydratedDocument<CasinoResult>;
 
 @Schema({
   timestamps: false,
-  collection: 't_casino_result',
+  collection: 't_diamond_casino_result',
 })
 export class CasinoResult {
   @Prop()

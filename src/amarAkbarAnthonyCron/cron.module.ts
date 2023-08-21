@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ScheduleModule } from '@nestjs/schedule';
 import { amarAkbarAnthonyService } from './cron.service';
-import { CasinoResult, CasinoResultSchema } from 'model/t_casino_result';
+import { CasinoResult, CasinoResultSchema } from 'model/t_diamond_casino_result';
 
 @Module({
   imports: [

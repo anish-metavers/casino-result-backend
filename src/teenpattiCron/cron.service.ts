@@ -3,7 +3,7 @@ import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CasinoResultDocument, CasinoResult } from 'model/t_casino_result';
+import { CasinoResultDocument, CasinoResult } from 'model/t_diamond_casino_result';
 
 @Injectable()
 export class TeenpattiService {
