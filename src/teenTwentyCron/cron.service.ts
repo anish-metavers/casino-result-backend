@@ -2,7 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
-import { CasinoResult, CasinoResultDocument } from 'model/t_diamond_casino_result';
+import {
+  CasinoResult,
+  CasinoResultDocument,
+} from 'model/t_diamond_casino_result';
 import { Model } from 'mongoose';
 
 @Injectable()
@@ -54,6 +57,7 @@ export class TeenTwentyService {
           response = {
             cards: cards,
             desc: '',
+            nat: `${gType}`,
             gtype: gType,
             sid: sid.join(','),
             mid: mid,
@@ -83,6 +87,7 @@ export class TeenTwentyService {
                 gtype: gType,
               },
               {
+                nat: `${win == 3 ? 'Player B' : 'Player A'} - ${gType}`,
                 win: `${win}`,
               },
             );

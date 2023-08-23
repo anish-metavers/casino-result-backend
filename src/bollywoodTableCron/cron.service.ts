@@ -2,7 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
-import { CasinoResult, CasinoResultDocument } from 'model/t_diamond_casino_result';
+import {
+  CasinoResult,
+  CasinoResultDocument,
+} from 'model/t_diamond_casino_result';
 import { Model } from 'mongoose';
 
 const cardType = [
@@ -169,6 +172,7 @@ export class BollywoodTableService {
             desc: `${color} | ${oddsEven} | ${cardHighLow} | CARD ${
               cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
             }`,
+            nat: ``,
             gtype: gtype,
             sid: '',
             mid: mid,
@@ -221,7 +225,10 @@ export class BollywoodTableService {
           if (data)
             await this.casinoresultModel.updateOne(
               { mid: dataMid, gtype },
-              { desc: `${winnerName} | ${data.desc}` },
+              {
+                desc: `${winnerName} | ${data.desc}`,
+                nat: `${winnerName} | ${data.desc} - ${gtype}`,
+              },
             );
         }
       }

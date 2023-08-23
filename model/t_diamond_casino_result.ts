@@ -15,6 +15,9 @@ export class CasinoResult {
   desc: string;
 
   @Prop()
+  nat: string;
+
+  @Prop()
   gtype: string;
 
   @Prop()

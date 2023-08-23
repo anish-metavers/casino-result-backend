@@ -2,7 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
-import { CasinoResult, CasinoResultDocument } from 'model/t_diamond_casino_result';
+import {
+  CasinoResult,
+  CasinoResultDocument,
+} from 'model/t_diamond_casino_result';
 import { Model } from 'mongoose';
 
 const cardTypeData = [
@@ -161,6 +164,9 @@ export class LuckySevenService {
         desc: `${color} | ${oddsEven} | ${cardHighLow} | card ${
           cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
         }`,
+        nat: `${color} | ${oddsEven} | ${cardHighLow} | card ${
+          cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
+        } - ${gtype}`,
         sid: `${
           cardHighLow == 'Low card'
             ? 1

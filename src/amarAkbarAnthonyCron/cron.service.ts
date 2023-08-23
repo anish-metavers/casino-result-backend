@@ -3,7 +3,10 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
 import { Model } from 'mongoose';
-import { CasinoResult, CasinoResultDocument } from 'model/t_diamond_casino_result';
+import {
+  CasinoResult,
+  CasinoResultDocument,
+} from 'model/t_diamond_casino_result';
 
 const cardType = [
   'A',
@@ -183,6 +186,7 @@ export class amarAkbarAnthonyService {
           desc: `${color} | ${oddsEven} | ${cardUnderOver} | card ${
             cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
           }`,
+          nat: '',
           gtype: gtype,
           sid: `${
             cardUnderOver == 'Under 7'
@@ -236,7 +240,10 @@ export class amarAkbarAnthonyService {
           if (data)
             await this.casinoresultModel.updateOne(
               { mid: dataMid, gtype: gtype },
-              { desc: `${winnerName} | ${data.desc}` },
+              {
+                desc: `${winnerName} | ${data.desc}`,
+                nat: `${winnerName} | ${data.desc} - ${gtype}`,
+              },
             );
         }
       }
