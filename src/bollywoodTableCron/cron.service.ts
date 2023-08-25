@@ -207,11 +207,11 @@ export class BollywoodTableService {
           } else if (win == '2') {
             winnerName = 'AMAR AKBAR ANTHONY';
           } else if (win == '3') {
-            winnerName = 'SAHIB BIWI AUR GHULAM';
+            winnerName = 'SAHIB BIBI AUR GHULAM';
           } else if (win == '4') {
             winnerName = 'DHARAM VEER';
           } else if (win == '5') {
-            winnerName = 'KIS KIS KO PYAR KAROON';
+            winnerName = 'KIS KISKO PYAR KAROON';
           } else if (win == '6') {
             winnerName = 'GHULAM';
           }
