@@ -156,7 +156,7 @@ export class DragonTigerService {
           });
           if (data)
             await this.casinoresultModel.updateOne(
-              { mid: dataMid },
+              { mid: dataMid, gtype: gtype },
               { desc: `${winnerName}|${data.desc}` },
             );
         }
