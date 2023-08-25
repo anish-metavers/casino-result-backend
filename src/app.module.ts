@@ -21,7 +21,7 @@ import { ConfigModule } from '@nestjs/config';
     BollywoodTableModule,
     LuckySevenModule,
     // TeenpattiModule,
-    // DragonTigerModule,
+    DragonTigerModule,
     // PokerTwentyModule,
     // PokerOneDayModule,
     // PokerSixModule,
