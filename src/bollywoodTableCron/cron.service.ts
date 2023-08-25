@@ -211,7 +211,7 @@ export class BollywoodTableService {
           } else if (win == '4') {
             winnerName = 'DHARAM VEER';
           } else if (win == '5') {
-            winnerName = 'KIS KISKO PYAR KAROON';
+            winnerName = 'KIS KISKO PYAAR KAROON';
           } else if (win == '6') {
             winnerName = 'GHULAM';
           }
