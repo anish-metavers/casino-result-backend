@@ -98,9 +98,13 @@ export class DragonTigerService {
         {
           cards: cards,
           win: `${win}`,
-          desc: `${cardCompair}*${color1}|${oddEvenCardFirst}|Card ${C1.charAt(
-            0,
-          )}*${color2}|${oddEvenCardSecond}|Card ${C2.charAt(0)}`,
+          desc: `${cardCompair}*${color1}|${oddEvenCardFirst}|Card ${C1.replace(
+            /[^0-9AaJjKkQq]/gi,
+            '',
+          )}*${color2}|${oddEvenCardSecond}|Card ${C2.replace(
+            /[^0-9AaJjKkQq]/gi,
+            '',
+          )}`,
         },
       );
 
@@ -108,9 +112,13 @@ export class DragonTigerService {
         if (!containMid) {
           response = {
             cards: cards,
-            desc: `${cardCompair}*${color1}|${oddEvenCardFirst}|Card ${C1.charAt(
-              0,
-            )}*${color2}|${oddEvenCardSecond}|Card ${C2.charAt(0)}`,
+            desc: `${cardCompair}*${color1}|${oddEvenCardFirst}|Card ${C1.replace(
+              /[^0-9AaJjKkQq]/gi,
+              '',
+            )}*${color2}|${oddEvenCardSecond}|Card ${C2.replace(
+              /[^0-9AaJjKkQq]/gi,
+              '',
+            )}`,
             gtype: gtype,
             sid: '',
             mid: mid,
