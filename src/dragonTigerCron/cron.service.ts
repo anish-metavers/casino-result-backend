@@ -1,7 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cron } from '@nestjs/schedule';
-import { CasinoResult, CasinoResultDocument } from 'model/t_diamond_casino_result';
+import {
+  CasinoResult,
+  CasinoResultDocument,
+} from 'model/t_diamond_casino_result';
 import { Model } from 'mongoose';
 import axios from 'axios';
 
@@ -34,6 +37,8 @@ export class DragonTigerService {
         C2 = `${item.C2}`;
       }
 
+      // console.log('Card1 :', C1);
+      // console.log('Card2 :', C2);
       // Card compair
       if (C1.charAt(0) == C2.charAt(0)) {
         cardCompair = 'Pair';
@@ -43,41 +48,49 @@ export class DragonTigerService {
 
       // Find Odd Or Even Card First
       let oddEvenCardFirst;
-      if (C1.charAt(0) % 2 == 0 || C1.charAt(0) == 'Q' || C1.charAt(0) == 1) {
-        oddEvenCardFirst = 'Even';
-      } else if (
-        C1.charAt(0) == 'A' ||
-        C1.charAt(0) == 'J' ||
-        C1.charAt(0) == 'K'
+      if (
+        Number(C1.charAt(0)) % 2 == 0 ||
+        C1.charAt(0) == 'Q' ||
+        Number(C1.charAt(0)) == 1
       ) {
+        oddEvenCardFirst = 'Even';
+        // console.log('First card :', oddEvenCardFirst);
+      } else {
         oddEvenCardFirst = 'Odd';
+        // console.log('First card :', oddEvenCardFirst);
       }
 
       // Find Odd Or Even Card Second
       let oddEvenCardSecond;
-      if (C2.charAt(0) % 2 == 0 || C2.charAt(0) == 'Q' || C2.charAt(0) == 1) {
-        oddEvenCardSecond = 'Even';
-      } else if (
-        C2.charAt(0) == 'A' ||
-        C2.charAt(0) == 'J' ||
-        C2.charAt(0) == 'K'
+      if (
+        Number(C2.charAt(0) % 2) == 0 ||
+        C2.charAt(0) == 'Q' ||
+        Number(C2.charAt(0)) == 1
       ) {
+        oddEvenCardSecond = 'Even';
+        // console.log('Second card :', oddEvenCardSecond);
+      } else {
         oddEvenCardSecond = 'Odd';
+        // console.log('Second card :', oddEvenCardSecond);
       }
 
       // Check Colors Card First
       let win, response, winnerName, color1, color2;
       if (C1.includes('CC') || C1.includes('SS')) {
         color1 = 'Black';
+        // console.log('color1 :', color1);
       } else if (C1.includes('HH') || C1.includes('DD')) {
         color1 = 'Red';
+        // console.log('color1 :', color1);
       }
 
       // Check Color Card Second
       if (C2.includes('CC') || C2.includes('SS')) {
         color2 = 'Black';
+        // console.log('color2 :', color2);
       } else if (C2.includes('HH') || C2.includes('DD')) {
         color2 = 'Red';
+        // console.log('color2 :', color2);
       }
 
       const containMid = await this.casinoresultModel.findOneAndUpdate(
