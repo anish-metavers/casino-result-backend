@@ -95,6 +95,10 @@ export class amarAkbarAnthonyService {
       const resData = await axios.get(aaaUrl);
       const WinResult = await axios.get(aaaWinResultUrl);
 
+      // let val = resData.data.Data.split('],"t2"')[0].split(':[');
+      // let var1 = val[1];
+      // let data = JSON.parse(var1);
+
       let data = JSON.parse(resData.data.Data);
       let winData = JSON.parse(WinResult.data.Data);
 
@@ -104,6 +108,10 @@ export class amarAkbarAnthonyService {
         gtype = item.gtype;
         card = item.C1;
       }
+
+      // mid = data.mid;
+      // gtype = data.gtype;
+      // card = data.C1;
 
       let cardRes, color, oddsEven, cardUnderOver, cardNumber, cardData;
 
@@ -237,14 +245,16 @@ export class amarAkbarAnthonyService {
         if (winnerName) {
           const data = await this.casinoresultModel.findOne({ mid: dataMid });
 
-          if (data)
-            await this.casinoresultModel.updateOne(
-              { mid: dataMid, gtype: gtype },
-              {
-                desc: `${winnerName} | ${data.desc}`,
-                nat: `${winnerName} | ${data.desc} - ${gtype}`,
-              },
-            );
+          if (countString(data.desc, '|') < 4) {
+            if (data)
+              await this.casinoresultModel.updateOne(
+                { mid: dataMid, gtype: gtype },
+                {
+                  desc: `${winnerName} | ${data.desc}`,
+                  nat: `${winnerName} | ${data.desc} - ${gtype}`,
+                },
+              );
+          }
         }
       }
       this.logger.verbose('Amar akbar anthony cron is running');
@@ -252,4 +262,17 @@ export class amarAkbarAnthonyService {
       console.error(error);
     }
   }
+}
+
+function countString(str, letter) {
+  let count = 0;
+
+  // looping through the items
+  for (let i = 0; i < str.length; i++) {
+    // check if the character is at that position
+    if (str.charAt(i) == letter) {
+      count += 1;
+    }
+  }
+  return count;
 }

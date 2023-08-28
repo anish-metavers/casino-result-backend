@@ -222,14 +222,16 @@ export class BollywoodTableService {
             gtype: gtype,
           });
 
-          if (data)
-            await this.casinoresultModel.updateOne(
-              { mid: dataMid, gtype },
-              {
-                desc: `${winnerName} | ${data.desc}`,
-                nat: `${winnerName} | ${data.desc} - ${gtype}`,
-              },
-            );
+          if (countString(data.desc, '|') < 4) {
+            if (data)
+              await this.casinoresultModel.updateOne(
+                { mid: dataMid, gtype },
+                {
+                  desc: `${winnerName} | ${data.desc}`,
+                  nat: `${winnerName} | ${data.desc} - ${gtype}`,
+                },
+              );
+          }
         }
       }
 
@@ -238,4 +240,17 @@ export class BollywoodTableService {
       console.log(error);
     }
   }
+}
+
+function countString(str, letter) {
+  let count = 0;
+
+  // looping through the items
+  for (let i = 0; i < str.length; i++) {
+    // check if the character is at that position
+    if (str.charAt(i) == letter) {
+      count += 1;
+    }
+  }
+  return count;
 }

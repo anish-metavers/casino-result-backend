@@ -37,8 +37,6 @@ export class DragonTigerService {
         C2 = `${item.C2}`;
       }
 
-      // console.log('Card1 :', C1);
-      // console.log('Card2 :', C2);
       // Card compair
       if (C1.charAt(0) == C2.charAt(0)) {
         cardCompair = 'Pair';
@@ -54,10 +52,8 @@ export class DragonTigerService {
         Number(C1.charAt(0)) == 1
       ) {
         oddEvenCardFirst = 'Even';
-        // console.log('First card :', oddEvenCardFirst);
       } else {
         oddEvenCardFirst = 'Odd';
-        // console.log('First card :', oddEvenCardFirst);
       }
 
       // Find Odd Or Even Card Second
@@ -68,29 +64,23 @@ export class DragonTigerService {
         Number(C2.charAt(0)) == 1
       ) {
         oddEvenCardSecond = 'Even';
-        // console.log('Second card :', oddEvenCardSecond);
       } else {
         oddEvenCardSecond = 'Odd';
-        // console.log('Second card :', oddEvenCardSecond);
       }
 
       // Check Colors Card First
       let win, response, winnerName, color1, color2;
       if (C1.includes('CC') || C1.includes('SS')) {
         color1 = 'Black';
-        // console.log('color1 :', color1);
       } else if (C1.includes('HH') || C1.includes('DD')) {
         color1 = 'Red';
-        // console.log('color1 :', color1);
       }
 
       // Check Color Card Second
       if (C2.includes('CC') || C2.includes('SS')) {
         color2 = 'Black';
-        // console.log('color2 :', color2);
       } else if (C2.includes('HH') || C2.includes('DD')) {
         color2 = 'Red';
-        // console.log('color2 :', color2);
       }
 
       const containMid = await this.casinoresultModel.findOneAndUpdate(
@@ -162,11 +152,13 @@ export class DragonTigerService {
             mid: dataMid,
             gtype: gtype,
           });
-          if (data)
-            await this.casinoresultModel.updateOne(
-              { mid: dataMid, gtype: gtype },
-              { desc: `${winnerName}|${data.desc}` },
-            );
+          if (countString(data.desc, '|') < 5) {
+            if (data)
+              await this.casinoresultModel.updateOne(
+                { mid: dataMid, gtype: gtype },
+                { desc: `${winnerName}|${data.desc}` },
+              );
+          }
         }
       }
 
@@ -175,4 +167,17 @@ export class DragonTigerService {
       console.log(error);
     }
   }
+}
+
+function countString(str, letter) {
+  let count = 0;
+
+  // looping through the items
+  for (let i = 0; i < str.length; i++) {
+    // check if the character is at that position
+    if (str.charAt(i) == letter) {
+      count += 1;
+    }
+  }
+  return count;
 }
