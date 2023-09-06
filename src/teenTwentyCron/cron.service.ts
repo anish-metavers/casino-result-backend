@@ -19,25 +19,38 @@ export class TeenTwentyService {
 
   @Cron('*/5 * * * * *')
   async handleCron() {
+    const teen20DataUrl = 'http://43.205.157.72:3434/casino/tp20DataBig';
     const teen20WinResultUrl = 'http://185.180.223.49:9002/result/teen20';
-    const teen20DataUrl = 'http://185.180.223.49:9002/data/teen20';
+    // const teen20DataUrl = 'http://185.180.223.49:9002/data/teen20';
     try {
       const resData = await axios.get(teen20DataUrl);
       const WinResult = await axios.get(teen20WinResultUrl);
 
-      let teen20Data = JSON.parse(resData.data.Data);
-      let teen20WinData = JSON.parse(WinResult.data.Data);
-      let cards, win, response;
+      let data = resData.data.data.data.t1[0];
 
-      let gType;
-      for (let items of teen20Data.t1) {
-        cards = `${items.C1},${items.C4},${items.C2},${items.C5},${items.C3},${items.C6}`;
-        gType = items.gtype;
-      }
+      let cards = `${data.C1},${data.C4},${data.C2},${data.C5},${data.C3},${data.C6}`;
+      let win, response;
+      let gType = data.gtype;
+
+      // let teen20Data = JSON.parse(resData.data.Data);
+      let teen20WinData = JSON.parse(WinResult.data.Data);
+
+      // let cards, win, response;
+      // let gType;
+      // for (let items of teen20Data.t1) {
+      //   cards = `${items.C1},${items.C4},${items.C2},${items.C5},${items.C3},${items.C6}`;
+      //   gType = items.gtype;
+      // }
 
       let sid = [];
       let mid;
-      let items = teen20Data.t2;
+      // let items = teen20Data.t2;
+      // items.forEach((item) => {
+      //   sid.push(item.sid);
+      //   mid = item.mid;
+      // });
+
+      let items = resData.data.data.data.t2;
       items.forEach((item) => {
         sid.push(item.sid);
         mid = item.mid;

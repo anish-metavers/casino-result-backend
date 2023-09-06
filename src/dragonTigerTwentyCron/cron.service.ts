@@ -1,16 +1,16 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cron } from '@nestjs/schedule';
+import axios from 'axios';
+import { Model } from 'mongoose';
 import {
   CasinoResult,
   CasinoResultDocument,
 } from 'model/t_diamond_casino_result';
-import { Model } from 'mongoose';
-import axios from 'axios';
 
 @Injectable()
-export class DragonTigerService {
-  private readonly logger = new Logger(DragonTigerService.name);
+export class dragonTigerTwentyService {
+  private readonly logger = new Logger(dragonTigerTwentyService.name);
 
   constructor(
     @InjectModel(CasinoResult.name)
@@ -19,21 +19,21 @@ export class DragonTigerService {
 
   @Cron('*/5 * * * * *')
   async handleCron() {
-    const dragonTigerUrl = 'http://43.205.157.72:3434/casino/1daydtDataBig';
-    const dragonTigerWinResultUrl = 'http://185.180.223.49:9002/result/dt6';
+    const dragonTiger20Url = 'http://43.205.157.72:3434/casino/dt20DataBig';
+    const dragonTiger20WinResultUrl = 'http://185.180.223.49:9002/result/dt20';
     try {
-      const resData = await axios.get(dragonTigerUrl);
-      const WinResult = await axios.get(dragonTigerWinResultUrl);
+      const resData = await axios.get(dragonTiger20Url);
+      const WinResult = await axios.get(dragonTiger20WinResultUrl);
 
       let data = resData.data.data.data.t1[0];
-      let gtype = resData.data.data.data.t2[0].gtype;
-
       let mid = data.mid;
+      let gtype = data.gtype;
       let C1 = data.C1;
       let C2 = data.C2;
       let cards = `${data.C1},${data.C2}`;
       let cardCompair;
 
+      // let data = JSON.parse(resData.data.Data);
       let winData = JSON.parse(WinResult.data.Data);
 
       // Card compair
@@ -69,27 +69,17 @@ export class DragonTigerService {
 
       // Check Colors Card First
       let win, response, winnerName, color1, color2;
-
-      if (C1.includes('CC')) {
-        color1 = 'Club';
-      } else if (C1.includes('SS')) {
-        color1 = 'Spade';
-      } else if (C1.includes('HH')) {
-        color1 = 'Heart';
-      } else if (C1.includes('DD')) {
-        color1 = 'Diamond';
+      if (C1.includes('CC') || C1.includes('SS')) {
+        color1 = 'Black';
+      } else if (C1.includes('HH') || C1.includes('DD')) {
+        color1 = 'Red';
       }
 
       // Check Color Card Second
-
-      if (C2.includes('CC')) {
-        color2 = 'Club';
-      } else if (C2.includes('SS')) {
-        color2 = 'Spade';
-      } else if (C2.includes('HH')) {
-        color2 = 'Heart';
-      } else if (C2.includes('DD')) {
-        color2 = 'Diamond';
+      if (C2.includes('CC') || C2.includes('SS')) {
+        color2 = 'Black';
+      } else if (C2.includes('HH') || C2.includes('DD')) {
+        color2 = 'Red';
       }
 
       const containMid = await this.casinoresultModel.findOneAndUpdate(
@@ -172,7 +162,7 @@ export class DragonTigerService {
         }
       }
 
-      this.logger.verbose('Dragon tiger cron is running');
+      this.logger.verbose('Dragon tiger 20 cron is running');
     } catch (error) {
       console.log(error);
     }

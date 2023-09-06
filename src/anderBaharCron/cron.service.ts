@@ -2,11 +2,11 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
+import { Model } from 'mongoose';
 import {
   CasinoResult,
   CasinoResultDocument,
 } from 'model/t_diamond_casino_result';
-import { Model } from 'mongoose';
 
 const cardType = [
   'A',
@@ -79,8 +79,8 @@ const cardNumbers = [
   'KCC',
 ];
 @Injectable()
-export class BollywoodTableService {
-  private readonly logger = new Logger(BollywoodTableService.name);
+export class anderBaharService {
+  private readonly logger = new Logger(anderBaharService.name);
 
   constructor(
     @InjectModel(CasinoResult.name)
@@ -89,30 +89,25 @@ export class BollywoodTableService {
 
   @Cron('*/5 * * * * *')
   async handleCron() {
-    const bTableUrl = 'http://43.205.157.72:3434/casino/btDataBig';
-    // const bTableUrl = 'http://185.180.223.49:9002/data/btable';
-    const bTableWinResultUrl = 'http://185.180.223.49:9002/result/btable';
+    const aaaUrl = 'http://43.205.157.72:3434/casino/ab20DataBig';
+    const aaaWinResultUrl = 'http://185.180.223.49:9002/result/ab20';
     try {
-      const resData = await axios.get(bTableUrl);
-      const WinResult = await axios.get(bTableWinResultUrl);
+      const resData = await axios.get(aaaUrl);
+      const WinResult = await axios.get(aaaWinResultUrl);
 
       let data = resData.data.data.data.t1[0];
-      let gtype = resData.data.data.data.t2[0].gtype;
-
+      // let cards = resData.data.data.data.t3;
+      // console.log(cards);
+      
       let card = data.C1;
       let mid = data.mid;
+      let gtype=data.gtype;
       let response;
 
-      // let data = JSON.parse(resData.data.Data);
       let winData = JSON.parse(WinResult.data.Data);
 
-      // let card, response, mid, gtype;
-      // for (let item of data.t1) {
-      //   mid = item.mid;
-      //   gtype = item.gtype;
-      //   card = item.C1;
-      // }
-      let cardRes, color, oddsEven, cardHighLow, cardNumber, cardData;
+      let cardRes, color, oddsEven, cardUnderOver, cardNumber, cardData;
+
       for (let i = 0; i < cardNumbers.length; i++) {
         if (cardNumbers[i] == card) {
           cardRes = cardNumbers[i];
@@ -122,39 +117,43 @@ export class BollywoodTableService {
             if (cardRes[0] == cardType[i]) {
               cardNumber = cardType[i];
 
-              if (cardNumber == 'A' || cardNumber == 'J') {
-                cardHighLow = 'BARATI';
-              } else if (cardNumber == 'K' || cardNumber == 'Q') {
-                cardHighLow = 'DULHA DULHAN';
+              if (cardNumber == 'A') {
+                cardUnderOver = 'Under 7';
+              } else if (cardNumber > '7' || cardNumber == '1') {
+                cardUnderOver = 'Over 7';
+              } else if (cardNumber == '7') {
+                cardUnderOver = 'Tie';
+              } else {
+                cardUnderOver = 'Under 7';
               }
             }
           }
 
           if (cardRes.includes('CC') || cardRes.includes('SS')) {
-            color = 'BLACK';
+            color = 'Black';
           } else {
-            color = 'RED';
+            color = 'Red';
           }
 
           if (!Number(cardRes[0])) {
             if (cardRes.includes('Q')) {
-              oddsEven = 'EVEN';
+              oddsEven = 'Even';
             } else {
               if (
                 cardRes.includes('J') ||
                 cardRes.includes('K') ||
                 cardRes.includes('A')
               ) {
-                oddsEven = 'ODD';
+                oddsEven = 'Odds';
               }
             }
           } else {
             if (cardRes[0] % 2 == 0) {
-              oddsEven = 'EVEN';
+              oddsEven = 'Even';
             } else if (cardRes.length == 4) {
-              oddsEven = 'EVEN';
+              oddsEven = 'Even';
             } else {
-              oddsEven = 'ODD';
+              oddsEven = 'Odds';
             }
           }
         }
@@ -167,34 +166,50 @@ export class BollywoodTableService {
         {
           cards: card,
           win: `${win}`,
-          desc: `${color} | ${oddsEven} | ${cardHighLow} | CARD ${
+          desc: `${color} | ${oddsEven} | ${cardUnderOver} | card ${
             cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
+          }`,
+          sid: `${
+            cardUnderOver == 'Under 7'
+              ? 1
+              : cardUnderOver == 'Over 7'
+              ? 2
+              : cardUnderOver == 'Tie'
+              ? 3
+              : cardUnderOver
           }`,
         },
       );
 
-      if (mid != 0) {
-        if (!containMid) {
-          response = {
-            cards: card,
-            desc: `${color} | ${oddsEven} | ${cardHighLow} | CARD ${
-              cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
-            }`,
-            nat: ``,
-            gtype: gtype,
-            sid: '',
-            mid: mid,
-            win: `${win}`,
-          };
-          const bTableResponse = new this.casinoresultModel(response);
-          await bTableResponse.save();
-        }
+      if (!containMid) {
+        response = {
+          cards: card,
+          desc: `${color} | ${oddsEven} | ${cardUnderOver} | card ${
+            cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
+          }`,
+          nat: '',
+          gtype: gtype,
+          sid: `${
+            cardUnderOver == 'Under 7'
+              ? 1
+              : cardUnderOver == 'Over 7'
+              ? 2
+              : cardUnderOver == 'Tie'
+              ? 3
+              : cardUnderOver
+          }`,
+          mid: mid,
+          win: `${win}`,
+        };
+
+        const amarAkbar = new this.casinoresultModel(response);
+        await amarAkbar.save();
       }
 
       //result set
       const setResult = await this.casinoresultModel.find({
-        gtype: gtype,
         win: 'undefined',
+        gtype,
       });
 
       let dataMid, resultMid;
@@ -204,25 +219,20 @@ export class BollywoodTableService {
           resultMid = wins.mid;
           if (resultMid == dataMid) {
             win = wins.result;
+            await this.casinoresultModel.findOneAndUpdate(
+              { mid: dataMid, gtype },
+              {
+                win: `${win}`,
+              },
+            );
           }
-          await this.casinoresultModel.findOneAndUpdate(
-            { mid: dataMid, gtype },
-            {
-              win: `${win}`,
-            },
-          );
+
           if (win == '1') {
-            winnerName = 'DON';
+            winnerName = 'Amar';
           } else if (win == '2') {
-            winnerName = 'AMAR AKBAR ANTHONY';
+            winnerName = 'Akbar';
           } else if (win == '3') {
-            winnerName = 'SAHIB BIBI AUR GHULAM';
-          } else if (win == '4') {
-            winnerName = 'DHARAM VEER';
-          } else if (win == '5') {
-            winnerName = 'KIS KISKO PYAAR KAROON';
-          } else if (win == '6') {
-            winnerName = 'GHULAM';
+            winnerName = 'Anthony';
           }
         }
         if (winnerName) {
@@ -234,7 +244,7 @@ export class BollywoodTableService {
           if (countString(data.desc, '|') < 4) {
             if (data)
               await this.casinoresultModel.updateOne(
-                { mid: dataMid, gtype },
+                { mid: dataMid, gtype: gtype },
                 {
                   desc: `${winnerName} | ${data.desc}`,
                   nat: `${winnerName} | ${data.desc} - ${gtype}`,
@@ -243,10 +253,9 @@ export class BollywoodTableService {
           }
         }
       }
-
-      this.logger.log('Bollywood table cron is running');
+      this.logger.verbose('ander bahar cron is running');
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 }

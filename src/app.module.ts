@@ -9,12 +9,15 @@ import { DragonTigerModule } from './dragonTigerCron/cron.module';
 import { PokerTwentyModule } from './pokerTwentyCron/cron.module';
 import { PokerOneDayModule } from './pokerOneDayCron/cron.module';
 import { PokerSixModule } from './pokerSixCron/cron.module';
+import { anderBaharModule } from './anderBaharCron/cron.module';
 import { ConfigModule } from '@nestjs/config';
+import { openTeenPattiModule } from './openTeenPattiCron/cron.module';
+import { lucky7aModule } from './luckySevenACron/cron.module';
+import { dragonTigerTwentyModule } from './dragonTigerTwentyCron/cron.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-    // MongooseModule.forRoot('mongodb://localhost:27017/daymonddetailsresult'),
     MongooseModule.forRoot(process.env.DATABASE_URL),
     TeenTwentyModule,
     amarAkabrAnthonyModule,
@@ -22,9 +25,13 @@ import { ConfigModule } from '@nestjs/config';
     LuckySevenModule,
     DragonTigerModule,
     TeenpattiModule,
-    // PokerTwentyModule,
-    // PokerOneDayModule,
-    // PokerSixModule,
+    PokerTwentyModule,
+    PokerOneDayModule,
+    PokerSixModule,
+    anderBaharModule,
+    openTeenPattiModule,
+    lucky7aModule,
+    dragonTigerTwentyModule,
   ],
 })
 export class AppModule {}

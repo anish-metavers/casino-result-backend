@@ -2,7 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
-import { CasinoResult, CasinoResultDocument } from 'model/t_diamond_casino_result';
+import {
+  CasinoResult,
+  CasinoResultDocument,
+} from 'model/t_diamond_casino_result';
 import { Model } from 'mongoose';
 
 @Injectable()
@@ -88,6 +91,7 @@ export class PokerSixService {
       //result set
       const setResult = await this.casinoresultModel.find({
         win: 'undefined',
+        gtype: gtype,
       });
 
       let dataMid, resultMid;
@@ -106,7 +110,7 @@ export class PokerSixService {
           );
         }
       }
-      this.logger.verbose('Poker9 cron is running');
+      this.logger.debug('Poker9 cron is running');
     } catch (error) {
       console.log(error);
     }

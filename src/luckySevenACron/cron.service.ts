@@ -2,13 +2,13 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
+import { Model } from 'mongoose';
 import {
   CasinoResult,
   CasinoResultDocument,
 } from 'model/t_diamond_casino_result';
-import { Model } from 'mongoose';
 
-const cardTypeData = [
+const cardType = [
   'A',
   '2',
   '3',
@@ -24,7 +24,7 @@ const cardTypeData = [
   'K',
 ];
 
-const cardNumberData = [
+const cardNumbers = [
   'ASS',
   '2SS',
   '3SS',
@@ -79,8 +79,8 @@ const cardNumberData = [
   'KCC',
 ];
 @Injectable()
-export class LuckySevenService {
-  private readonly logger = new Logger(LuckySevenService.name);
+export class lucky7aService {
+  private readonly logger = new Logger(lucky7aService.name);
 
   constructor(
     @InjectModel(CasinoResult.name)
@@ -89,15 +89,13 @@ export class LuckySevenService {
 
   @Cron('*/5 * * * * *')
   async handleCron() {
-    const lucky7Url = 'http://43.205.157.72:3434/casino/lucky7euDataBig';
-    // const lucky7Url = 'http://185.180.223.49:9002/Data/lucky7eu';
-    const lucky7WinResultUrl = 'http://185.180.223.49:9002/result/lucky7eu';
-
+    const lucky7aUrl = 'http://43.205.157.72:3434/casino/lucky7aDataBig';
+    const lucky7aResultUrl = 'http://185.180.223.49:9002/result/lucky7';
     try {
-      const lucky7ResData = await axios.get(lucky7Url);
-      const lucky7WinResult = await axios.get(lucky7WinResultUrl);
+      const lucky7aResData = await axios.get(lucky7aUrl);
+      const lucky7aResult = await axios.get(lucky7aResultUrl);
 
-      let data = lucky7ResData.data.data.data.t1[0];
+      let data = lucky7aResData.data.data.data.t1[0];
 
       let mid = data.mid;
       let card = data.C1;
@@ -105,25 +103,18 @@ export class LuckySevenService {
       let response;
 
       // let data = JSON.parse(lucky7ResData.data.Data);
-      let winData = JSON.parse(lucky7WinResult.data.Data);
-
-      // let card, response, mid, gtype;
-      // for (let item of data.t1) {
-      //   mid = item.mid;
-      //   gtype = item.gtype;
-      //   card = item.C1;
-      // }
+      let winData = JSON.parse(lucky7aResult.data.Data);
 
       let cardData, cardHighLow, oddsEven, cardRes, color, cardNumber, win;
 
-      for (let i = 0; i < cardNumberData.length; i++) {
-        if (cardNumberData[i] == card) {
-          cardRes = cardNumberData[i];
+      for (let i = 0; i < cardNumbers.length; i++) {
+        if (cardNumbers[i] == card) {
+          cardRes = cardNumbers[i];
           cardData = cardRes[0];
 
-          for (let i = 0; i < cardTypeData.length; i++) {
-            if (cardRes[0] == cardTypeData[i]) {
-              cardNumber = cardTypeData[i];
+          for (let i = 0; i < cardType.length; i++) {
+            if (cardRes[0] == cardType[i]) {
+              cardNumber = cardType[i];
 
               if (cardNumber == 'A') {
                 cardHighLow = 'Low card';
@@ -233,13 +224,14 @@ export class LuckySevenService {
           await this.casinoresultModel.findOneAndUpdate(
             { mid: dataMid, gtype: gtype },
             {
-              win: `${cardHighLow === 'Tie' ? 3 : win}`,
+              // win: `${cardHighLow === 'Tie' ? 3 : win}`,
+              win: `${win}`,
             },
           );
         }
       }
 
-      this.logger.warn('Lucky7eu cron is running');
+      this.logger.warn('Lucky 7 a cron is running');
     } catch (error) {
       console.error(error);
     }

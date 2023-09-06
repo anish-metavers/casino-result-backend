@@ -3,7 +3,10 @@ import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CasinoResultDocument, CasinoResult } from 'model/t_diamond_casino_result';
+import {
+  CasinoResultDocument,
+  CasinoResult,
+} from 'model/t_diamond_casino_result';
 
 @Injectable()
 export class TeenpattiService {
@@ -64,6 +67,7 @@ export class TeenpattiService {
       //set win result
       const teenSetResult = await this.casinoresultModel.find({
         win: 'undefined',
+        gtype: gType,
       });
 
       let dataMid, resultMid;

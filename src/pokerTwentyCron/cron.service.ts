@@ -2,7 +2,10 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Cron } from '@nestjs/schedule';
 import axios from 'axios';
-import { CasinoResult, CasinoResultDocument } from 'model/t_diamond_casino_result';
+import {
+  CasinoResult,
+  CasinoResultDocument,
+} from 'model/t_diamond_casino_result';
 import { Model } from 'mongoose';
 
 @Injectable()
@@ -33,12 +36,14 @@ export class PokerTwentyService {
         card = `${item.C1},${item.C2},${item.C3},${item.C4},${item.C5},${item.C6},${item.C7},${item.C8},${item.C9}`;
       }
 
+      // console.log("desc :",desc);
+
       let sid = [];
       let items = data.t2;
       let player1Sids = items.filter((item, index) => index % 2 == 0);
       let player2Sids = items.filter((item, index) => index % 2 == 1);
 
-      desc = desc.replace('#Pair,', '#One Pair,');
+      desc = desc.replaceAll('#Pair,', '#One Pair,');
       //PLAYER 1 SID GET DATA
       let sidStrings = desc.split('##');
       if (sidStrings.length) {
@@ -46,8 +51,8 @@ export class PokerTwentyService {
           sid.push(items[0].sid);
           const nation = sidStrings[1].split(',')[0];
           const nation2 = sidStrings[2].split(',')[0];
-          // console.log('Nation 1 :',nation)
-          // console.log('Nation 2 :',nation2)
+          // console.log('nation 1 :-',nation);
+          // console.log('nation 2 :-',nation2);
           sid.push(
             player1Sids.find((item, index) => item.nation == nation)?.sid,
           );
@@ -55,9 +60,12 @@ export class PokerTwentyService {
             player2Sids.find((item, index) => item.nation == nation2)?.sid,
           );
         } else if (sidStrings[0] === 'Player B') {
+          // console.log('hello :-',sidStrings[0])
           sid.push(items[0].sid);
           const nation = sidStrings[1].split(',')[0];
           const nation2 = sidStrings[2].split(',')[0];
+          // console.log('nation :-', nation);
+          // console.log('nation 2 :-', nation2);
           sid.push(
             player2Sids.find((item, index) => item.nation == nation)?.sid,
           );
@@ -99,6 +107,7 @@ export class PokerTwentyService {
       //result set
       const setResult = await this.casinoresultModel.find({
         win: 'undefined',
+        gtype,
       });
 
       let dataMid, resultMid;

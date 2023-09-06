@@ -89,29 +89,32 @@ export class amarAkbarAnthonyService {
 
   @Cron('*/5 * * * * *')
   async handleCron() {
-    const aaaUrl = 'http://185.180.223.49:9002/data/aaa';
+    const aaaUrl = 'http://43.205.157.72:3434/casino/aaaDataBig';
+    // const aaaUrl = 'http://185.180.223.49:9002/data/aaa';
     const aaaWinResultUrl = 'http://185.180.223.49:9002/result/aaa';
     try {
       const resData = await axios.get(aaaUrl);
       const WinResult = await axios.get(aaaWinResultUrl);
 
-      // let val = resData.data.Data.split('],"t2"')[0].split(':[');
-      // let var1 = val[1];
-      // let data = JSON.parse(var1);
+      let data = resData.data.data.data.t1[0];
+      let gtype = resData.data.data.data.t2[0].gtype;
+      // console.log(data.mid);
+      // console.log(data.C1);
+      // console.log(gtype);
 
-      let data = JSON.parse(resData.data.Data);
+      let card = data.C1;
+      let mid = data.mid;
+      let response;
+
+      // let data = JSON.parse(resData.data.Data);
       let winData = JSON.parse(WinResult.data.Data);
 
-      let card, response, mid, gtype;
-      for (let item of data.t1) {
-        mid = item.mid;
-        gtype = item.gtype;
-        card = item.C1;
-      }
-
-      // mid = data.mid;
-      // gtype = data.gtype;
-      // card = data.C1;
+      // let card, response, mid;
+      // for (let item of data.t1) {
+      //   mid = item.mid;
+      //   gtype = item.gtype;
+      //   card = item.C1;
+      // }
 
       let cardRes, color, oddsEven, cardUnderOver, cardNumber, cardData;
 
@@ -243,7 +246,10 @@ export class amarAkbarAnthonyService {
           }
         }
         if (winnerName) {
-          const data = await this.casinoresultModel.findOne({ mid: dataMid });
+          const data = await this.casinoresultModel.findOne({
+            mid: dataMid,
+            gtype: gtype,
+          });
 
           if (countString(data.desc, '|') < 4) {
             if (data)
@@ -266,7 +272,7 @@ export class amarAkbarAnthonyService {
 
 function countString(str, letter) {
   let count = 0;
-
+  
   // looping through the items
   for (let i = 0; i < str.length; i++) {
     // check if the character is at that position
