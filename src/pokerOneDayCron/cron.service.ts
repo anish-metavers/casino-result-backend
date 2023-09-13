@@ -36,48 +36,12 @@ export class PokerOneDayService {
         card = `${item.C1},${item.C2},${item.C3},${item.C4},${item.C5},${item.C6},${item.C7},${item.C8},${item.C9}`;
       }
 
-      let sid = [];
-      let items = data.t2;
-      let player1Sids = items.filter((item, index) => index % 2 == 0);
-      let player2Sids = items.filter((item, index) => index % 2 == 1);
-
-      // desc = desc.replace('#Pair,', '#One Pair,');
-      let sidStrings = desc.split('##');
-      // console.log(sidStrings[0], sidStrings[1], sidStrings[2]);
-      if (sidStrings.length) {
-        if (sidStrings[0] == 'Player A') {
-          sid.push(items[0].sid);
-          // console.log('item :', items[0]);
-          const nation = sidStrings[1].split(',')[0];
-          const nation2 = sidStrings[2].split(',')[0];
-          sid.push(
-            player1Sids.find((item, index) => item.nation == nation)?.sid,
-          );
-          sid.push(
-            player2Sids.find((item, index) => item.nation == nation2)?.sid,
-          );
-        } else if (sidStrings[0] == 'Player B') {
-          sid.push(items[0].sid);
-          const nation = sidStrings[1].split(',')[0];
-          const nation2 = sidStrings[2].split(',')[0];
-          sid.push(
-            player2Sids.find((item, index) => item.nation == nation)?.sid,
-          );
-          sid.push(
-            player1Sids.find((item, index) => item.nation == nation2)?.sid,
-          );
-        }
-      }
-
       let win;
       const containMid = await this.casinoresultModel.findOneAndUpdate(
         { mid, gtype },
         {
           cards: card,
           desc: `${desc}`,
-          gtype: gtype,
-          mid: mid,
-          sid: sid.join(','),
           win: `${win}`,
         },
       );
@@ -87,7 +51,7 @@ export class PokerOneDayService {
             cards: card,
             desc: `${desc}`,
             gtype: gtype,
-            sid: sid.join(','),
+            sid: '',
             mid: mid,
             win: `${win}`,
           };
@@ -113,6 +77,7 @@ export class PokerOneDayService {
           await this.casinoresultModel.findOneAndUpdate(
             { mid: dataMid, gtype: gtype },
             {
+              sid: `${win}`,
               win: `${win}`,
             },
           );

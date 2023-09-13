@@ -36,14 +36,14 @@ export class DragonTigerService {
 
       let winData = JSON.parse(WinResult.data.Data);
 
-      // Card compair
+      // Card compair pair or not pair
       if (C1.charAt(0) == C2.charAt(0)) {
         cardCompair = 'Pair';
       } else if (C1 != C2) {
         cardCompair = 'No Pair';
       }
 
-      // Find Odd Or Even Card First
+      // Find the odd or even card first
       let oddEvenCardFirst;
       if (
         Number(C1.charAt(0)) % 2 == 0 ||
@@ -55,7 +55,7 @@ export class DragonTigerService {
         oddEvenCardFirst = 'Odd';
       }
 
-      // Find Odd Or Even Card Second
+      // Find the odd or even card second
       let oddEvenCardSecond;
       if (
         Number(C2.charAt(0) % 2) == 0 ||
@@ -67,43 +67,52 @@ export class DragonTigerService {
         oddEvenCardSecond = 'Odd';
       }
 
-      // Check Colors Card First
-      let win, response, winnerName, color1, color2;
+      // Check the first card color
 
+      let firstCardColorName;
       if (C1.includes('CC')) {
-        color1 = 'Club';
+        firstCardColorName = 'Club';
       } else if (C1.includes('SS')) {
-        color1 = 'Spade';
+        firstCardColorName = 'Spade';
       } else if (C1.includes('HH')) {
-        color1 = 'Heart';
+        firstCardColorName = 'Heart';
       } else if (C1.includes('DD')) {
-        color1 = 'Diamond';
+        firstCardColorName = 'Diamond';
       }
 
-      // Check Color Card Second
+      let firstCardColor;
+      if (C1.includes('CC') || C1.includes('SS')) {
+        firstCardColor = 'Black';
+      } else if (C1.includes('HH') || C1.includes('DD')) {
+        firstCardColor = 'Red';
+      }
 
+      // Check the second card color
+      let secondCardColorName;
       if (C2.includes('CC')) {
-        color2 = 'Club';
+        secondCardColorName = 'Club';
       } else if (C2.includes('SS')) {
-        color2 = 'Spade';
+        secondCardColorName = 'Spade';
       } else if (C2.includes('HH')) {
-        color2 = 'Heart';
+        secondCardColorName = 'Heart';
       } else if (C2.includes('DD')) {
-        color2 = 'Diamond';
+        secondCardColorName = 'Diamond';
       }
 
+      let secondCardColor;
+      if (C2.includes('CC') || C2.includes('SS')) {
+        secondCardColor = 'Black';
+      } else if (C2.includes('HH') || C2.includes('DD')) {
+        secondCardColor = 'Red';
+      }
+
+      let win, response;
       const containMid = await this.casinoresultModel.findOneAndUpdate(
         { mid, gtype },
         {
           cards: cards,
           win: `${win}`,
-          desc: `${cardCompair}*${color1}|${oddEvenCardFirst}|Card ${C1.replace(
-            /[^0-9AaJjKkQq]/gi,
-            '',
-          )}*${color2}|${oddEvenCardSecond}|Card ${C2.replace(
-            /[^0-9AaJjKkQq]/gi,
-            '',
-          )}`,
+          desc: `${cardCompair}*${firstCardColor}|${oddEvenCardFirst}|${firstCardColorName}*${secondCardColor}|${oddEvenCardSecond}|${secondCardColorName}`,
         },
       );
 
@@ -111,13 +120,7 @@ export class DragonTigerService {
         if (!containMid) {
           response = {
             cards: cards,
-            desc: `${cardCompair}*${color1}|${oddEvenCardFirst}|Card ${C1.replace(
-              /[^0-9AaJjKkQq]/gi,
-              '',
-            )}*${color2}|${oddEvenCardSecond}|Card ${C2.replace(
-              /[^0-9AaJjKkQq]/gi,
-              '',
-            )}`,
+            desc: '',
             gtype: gtype,
             sid: '',
             mid: mid,
@@ -135,7 +138,7 @@ export class DragonTigerService {
         gtype,
       });
 
-      let dataMid, resultMid;
+      let dataMid, resultMid, winnerName;
       for (let item of DragonTigerSetResult) {
         dataMid = item.mid;
         for (let wins of winData.data) {

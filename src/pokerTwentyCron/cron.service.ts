@@ -36,12 +36,10 @@ export class PokerTwentyService {
         card = `${item.C1},${item.C2},${item.C3},${item.C4},${item.C5},${item.C6},${item.C7},${item.C8},${item.C9}`;
       }
 
-      // console.log("desc :",desc);
-
       let sid = [];
       let items = data.t2;
-      let player1Sids = items.filter((item, index) => index % 2 == 0);
-      let player2Sids = items.filter((item, index) => index % 2 == 1);
+      let player1Sids = items.filter((index) => index % 2 == 0);
+      let player2Sids = items.filter((index) => index % 2 == 1);
 
       desc = desc.replaceAll('#Pair,', '#One Pair,');
       //PLAYER 1 SID GET DATA

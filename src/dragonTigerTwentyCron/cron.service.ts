@@ -33,7 +33,6 @@ export class dragonTigerTwentyService {
       let cards = `${data.C1},${data.C2}`;
       let cardCompair;
 
-      // let data = JSON.parse(resData.data.Data);
       let winData = JSON.parse(WinResult.data.Data);
 
       // Card compair

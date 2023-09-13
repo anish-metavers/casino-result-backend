@@ -103,15 +103,8 @@ export class BollywoodTableService {
       let mid = data.mid;
       let response;
 
-      // let data = JSON.parse(resData.data.Data);
       let winData = JSON.parse(WinResult.data.Data);
 
-      // let card, response, mid, gtype;
-      // for (let item of data.t1) {
-      //   mid = item.mid;
-      //   gtype = item.gtype;
-      //   card = item.C1;
-      // }
       let cardRes, color, oddsEven, cardHighLow, cardNumber, cardData;
       for (let i = 0; i < cardNumbers.length; i++) {
         if (cardNumbers[i] == card) {

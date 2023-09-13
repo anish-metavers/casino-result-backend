@@ -104,15 +104,7 @@ export class LuckySevenService {
       let gtype = data.gtype;
       let response;
 
-      // let data = JSON.parse(lucky7ResData.data.Data);
       let winData = JSON.parse(lucky7WinResult.data.Data);
-
-      // let card, response, mid, gtype;
-      // for (let item of data.t1) {
-      //   mid = item.mid;
-      //   gtype = item.gtype;
-      //   card = item.C1;
-      // }
 
       let cardData, cardHighLow, oddsEven, cardRes, color, cardNumber, win;
 
@@ -170,10 +162,10 @@ export class LuckySevenService {
         cards: card,
         win: `${win}`,
         desc: `${color} | ${oddsEven} | ${cardHighLow} | card ${
-          cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
+          cardData == '1' ? 10 : cardData
         }`,
         nat: `${color} | ${oddsEven} | ${cardHighLow} | card ${
-          cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
+          cardData == '1' ? 10 : cardData
         } - ${gtype}`,
         sid: `${
           cardHighLow == 'Low card'
@@ -195,7 +187,7 @@ export class LuckySevenService {
           response = {
             cards: card,
             desc: `${color} | ${oddsEven} | ${cardHighLow} | card ${
-              cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
+              cardData == '1' ? 10 : cardData
             }`,
             gtype: gtype,
             sid: `${

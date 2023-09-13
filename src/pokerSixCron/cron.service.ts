@@ -7,7 +7,6 @@ import {
   CasinoResultDocument,
 } from 'model/t_diamond_casino_result';
 import { Model } from 'mongoose';
-
 @Injectable()
 export class PokerSixService {
   private readonly logger = new Logger(PokerSixService.name);
@@ -41,7 +40,8 @@ export class PokerSixService {
       let sidStrings = desc?.split('||');
 
       if (sidStrings.length >= 2) {
-        let nation = sidStrings[1].split(':')[1]?.trim();
+        let data = sidStrings[1].split(':')[1]?.trim();
+        let nation = data.replace('Two pairs', 'Two pair');
 
         if (sidStrings.length) {
           if (sidStrings[0].includes('Player 1')) {
@@ -57,7 +57,11 @@ export class PokerSixService {
           } else if (sidStrings[0].includes('Player 6')) {
             sid.push(items[5].sid);
           }
-          sid.push(items.find((item, index) => item.nation == nation)?.sid);
+          sid.push(
+            items.find(
+              (item) => item.nation.toLowerCase() == nation.toLowerCase(),
+            )?.sid,
+          );
         }
       }
 
@@ -79,7 +83,7 @@ export class PokerSixService {
             cards: card,
             desc: `${desc}`,
             gtype: gtype,
-            sid: sid.join(','),
+            sid: '',
             mid: mid,
             win: `${win}`,
           };

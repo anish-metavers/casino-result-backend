@@ -8,76 +8,6 @@ import {
   CasinoResultDocument,
 } from 'model/t_diamond_casino_result';
 
-const cardType = [
-  'A',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-  '1',
-  'J',
-  'Q',
-  'K',
-];
-
-const cardNumbers = [
-  'ASS',
-  '2SS',
-  '3SS',
-  '4SS',
-  '5SS',
-  '6SS',
-  '7SS',
-  '8SS',
-  '9SS',
-  '10SS',
-  'JSS',
-  'QSS',
-  'KSS',
-  'ADD',
-  '2DD',
-  '3DD',
-  '4DD',
-  '5DD',
-  '6DD',
-  '7DD',
-  '8DD',
-  '9DD',
-  '10DD',
-  'JDD',
-  'QDD',
-  'KDD',
-  'AHH',
-  '2HH',
-  '3HH',
-  '4HH',
-  '5HH',
-  '6HH',
-  '7HH',
-  '8HH',
-  '9HH',
-  '10HH',
-  'JHH',
-  'QHH',
-  'KHH',
-  'ACC',
-  '2CC',
-  '3CC',
-  '4CC',
-  '5CC',
-  '6CC',
-  '7CC',
-  '8CC',
-  '9CC',
-  '10CC',
-  'JCC',
-  'QCC',
-  'KCC',
-];
 @Injectable()
 export class anderBaharService {
   private readonly logger = new Logger(anderBaharService.name);
@@ -89,115 +19,38 @@ export class anderBaharService {
 
   @Cron('*/5 * * * * *')
   async handleCron() {
-    const aaaUrl = 'http://43.205.157.72:3434/casino/ab20DataBig';
-    const aaaWinResultUrl = 'http://185.180.223.49:9002/result/ab20';
+    const anderBaharGameUrl = 'http://43.205.157.72:3434/casino/ab20DataBig';
+    const anderBaharGameResultUrl = 'http://185.180.223.49:9002/result/ab20';
     try {
-      const resData = await axios.get(aaaUrl);
-      const WinResult = await axios.get(aaaWinResultUrl);
+      const resData = await axios.get(anderBaharGameUrl);
+      const WinResult = await axios.get(anderBaharGameResultUrl);
 
       let data = resData.data.data.data.t1[0];
-      // let cards = resData.data.data.data.t3;
-      // console.log(cards);
-      
-      let card = data.C1;
       let mid = data.mid;
-      let gtype=data.gtype;
-      let response;
+      let gtype = data.gtype;
+
+      let cards = resData.data.data.data.t3[0];
+      let aall = cards.aall;
+      let ball = cards.ball;
 
       let winData = JSON.parse(WinResult.data.Data);
 
-      let cardRes, color, oddsEven, cardUnderOver, cardNumber, cardData;
-
-      for (let i = 0; i < cardNumbers.length; i++) {
-        if (cardNumbers[i] == card) {
-          cardRes = cardNumbers[i];
-          cardData = cardRes[0];
-
-          for (let i = 0; i < cardType.length; i++) {
-            if (cardRes[0] == cardType[i]) {
-              cardNumber = cardType[i];
-
-              if (cardNumber == 'A') {
-                cardUnderOver = 'Under 7';
-              } else if (cardNumber > '7' || cardNumber == '1') {
-                cardUnderOver = 'Over 7';
-              } else if (cardNumber == '7') {
-                cardUnderOver = 'Tie';
-              } else {
-                cardUnderOver = 'Under 7';
-              }
-            }
-          }
-
-          if (cardRes.includes('CC') || cardRes.includes('SS')) {
-            color = 'Black';
-          } else {
-            color = 'Red';
-          }
-
-          if (!Number(cardRes[0])) {
-            if (cardRes.includes('Q')) {
-              oddsEven = 'Even';
-            } else {
-              if (
-                cardRes.includes('J') ||
-                cardRes.includes('K') ||
-                cardRes.includes('A')
-              ) {
-                oddsEven = 'Odds';
-              }
-            }
-          } else {
-            if (cardRes[0] % 2 == 0) {
-              oddsEven = 'Even';
-            } else if (cardRes.length == 4) {
-              oddsEven = 'Even';
-            } else {
-              oddsEven = 'Odds';
-            }
-          }
-        }
-      }
-
-      let win, winnerName;
+      let win;
 
       const containMid = await this.casinoresultModel.findOneAndUpdate(
         { mid, gtype },
         {
-          cards: card,
+          cards: `${aall},*,${ball}`,
           win: `${win}`,
-          desc: `${color} | ${oddsEven} | ${cardUnderOver} | card ${
-            cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
-          }`,
-          sid: `${
-            cardUnderOver == 'Under 7'
-              ? 1
-              : cardUnderOver == 'Over 7'
-              ? 2
-              : cardUnderOver == 'Tie'
-              ? 3
-              : cardUnderOver
-          }`,
         },
       );
-
+      let response;
       if (!containMid) {
         response = {
-          cards: card,
-          desc: `${color} | ${oddsEven} | ${cardUnderOver} | card ${
-            cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
-          }`,
-          nat: '',
+          cards: `${aall},*,${ball}`,
+          desc: '',
           gtype: gtype,
-          sid: `${
-            cardUnderOver == 'Under 7'
-              ? 1
-              : cardUnderOver == 'Over 7'
-              ? 2
-              : cardUnderOver == 'Tie'
-              ? 3
-              : cardUnderOver
-          }`,
+          sid: '',
           mid: mid,
           win: `${win}`,
         };
@@ -226,31 +79,6 @@ export class anderBaharService {
               },
             );
           }
-
-          if (win == '1') {
-            winnerName = 'Amar';
-          } else if (win == '2') {
-            winnerName = 'Akbar';
-          } else if (win == '3') {
-            winnerName = 'Anthony';
-          }
-        }
-        if (winnerName) {
-          const data = await this.casinoresultModel.findOne({
-            mid: dataMid,
-            gtype: gtype,
-          });
-
-          if (countString(data.desc, '|') < 4) {
-            if (data)
-              await this.casinoresultModel.updateOne(
-                { mid: dataMid, gtype: gtype },
-                {
-                  desc: `${winnerName} | ${data.desc}`,
-                  nat: `${winnerName} | ${data.desc} - ${gtype}`,
-                },
-              );
-          }
         }
       }
       this.logger.verbose('ander bahar cron is running');
@@ -258,17 +86,4 @@ export class anderBaharService {
       console.error(error);
     }
   }
-}
-
-function countString(str, letter) {
-  let count = 0;
-
-  // looping through the items
-  for (let i = 0; i < str.length; i++) {
-    // check if the character is at that position
-    if (str.charAt(i) == letter) {
-      count += 1;
-    }
-  }
-  return count;
 }

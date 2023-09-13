@@ -160,11 +160,11 @@ export class lucky7aService {
       response = {
         cards: card,
         win: `${win}`,
-        desc: `${color} | ${oddsEven} | ${cardHighLow} | card ${
-          cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
+        desc: `${cardHighLow} | ${color} | ${oddsEven} | card ${
+          cardData == '1' ? 10 : cardData
         }`,
-        nat: `${color} | ${oddsEven} | ${cardHighLow} | card ${
-          cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
+        nat: `${cardHighLow} | ${color} | ${oddsEven} | card ${
+          cardData == '1' ? 10 : cardData
         } - ${gtype}`,
         sid: `${
           cardHighLow == 'Low card'
@@ -185,8 +185,8 @@ export class lucky7aService {
         if (!containMid) {
           response = {
             cards: card,
-            desc: `${color} | ${oddsEven} | ${cardHighLow} | card ${
-              cardData == 'A' ? 1 : cardData == '1' ? 10 : cardData
+            desc: `${cardHighLow} | ${color} | ${oddsEven} | card ${
+              cardData == '1' ? 10 : cardData
             }`,
             gtype: gtype,
             sid: `${
@@ -224,7 +224,6 @@ export class lucky7aService {
           await this.casinoresultModel.findOneAndUpdate(
             { mid: dataMid, gtype: gtype },
             {
-              // win: `${cardHighLow === 'Tie' ? 3 : win}`,
               win: `${win}`,
             },
           );

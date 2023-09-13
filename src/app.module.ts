@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ConfigModule } from '@nestjs/config';
 import { TeenTwentyModule } from './teenTwentyCron/cron.module';
 import { LuckySevenModule } from './luckySevenCron/cron.module';
 import { amarAkabrAnthonyModule } from './amarAkbarAnthonyCron/cron.module';
@@ -10,7 +11,6 @@ import { PokerTwentyModule } from './pokerTwentyCron/cron.module';
 import { PokerOneDayModule } from './pokerOneDayCron/cron.module';
 import { PokerSixModule } from './pokerSixCron/cron.module';
 import { anderBaharModule } from './anderBaharCron/cron.module';
-import { ConfigModule } from '@nestjs/config';
 import { openTeenPattiModule } from './openTeenPattiCron/cron.module';
 import { lucky7aModule } from './luckySevenACron/cron.module';
 import { dragonTigerTwentyModule } from './dragonTigerTwentyCron/cron.module';

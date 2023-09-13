@@ -27,7 +27,10 @@ export class openTeenPattiService {
 
       let data = resData.data.data.data.t1[0];
 
-      let card = data.cards;
+      let cardData = data.cards;
+      let card = cardData.split('#')?.[0];
+      let descRes = cardData.toString()?.split('#')?.[1];
+      
       let mid = data.mid;
       let gtype = data.gtype;
       let response;
@@ -41,9 +44,10 @@ export class openTeenPattiService {
         {
           cards: `${card}`,
           win: `${win}`,
-          desc: '',
+          desc:`${descRes}`,
           sid:
-            card.toString()?.split('#')?.[1]?.split(' ')[1] || 'not declared',
+            cardData.toString()?.split('#')?.[1]?.split(' ')[1] ||
+            'not declared',
         },
       );
 
@@ -52,7 +56,6 @@ export class openTeenPattiService {
           response = {
             cards: '',
             desc: '',
-            nat: '',
             gtype: gtype,
             mid: mid,
             sid: '',
@@ -69,7 +72,7 @@ export class openTeenPattiService {
         gtype,
       });
 
-      let dataMid, resultMid, winnerName;
+      let dataMid, resultMid;
       for (let item of setResult) {
         dataMid = item.mid;
         for (let wins of resultData.data) {
