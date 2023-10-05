@@ -94,7 +94,7 @@ export class TeenTwentyService {
         }
       }
 
-      this.logger.warn('Teen20 cron is running');
+      this.logger.debug('Teen20 cron is running');
     } catch (error) {
       this.logger.error(error);
     }

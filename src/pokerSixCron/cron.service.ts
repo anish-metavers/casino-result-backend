@@ -114,7 +114,7 @@ export class PokerSixService {
           );
         }
       }
-      this.logger.debug('Poker9 cron is running');
+      this.logger.debug('Poker 6 cron is running');
     } catch (error) {
       console.log(error);
     }

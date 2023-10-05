@@ -19,22 +19,19 @@ export class PokerOneDayService {
 
   @Cron('*/5 * * * * *')
   async handleCron() {
-    const poker1DayUrl = 'http://185.180.223.49:9002/data/poker';
-    const poker1DayWinResultUrl = 'http://185.180.223.49:9002/result/poker';
+    // const poker1DayUrl = 'http://185.180.223.49:9002/data/poker';
+    const dataUrl = 'http://43.205.157.72:3434/casino/1daypDataBig';
+    const ResultUrl = 'http://185.180.223.49:9002/result/poker';
     try {
-      const pokerResData = await axios.get(poker1DayUrl);
-      const pokerWinResult = await axios.get(poker1DayWinResultUrl);
+      let pokerResData = await axios.get(dataUrl);
+      let item = pokerResData.data.data.data.t1[0];
+      const mid = item.mid;
+      const card = `${item.C1},${item.C2},${item.C3},${item.C4},${item.C5},${item.C6},${item.C7},${item.C8},${item.C9}`;
+      const desc = `${item.desc}`;
+      const gtype = pokerResData.data.data.data.t2[0].gtype;
 
-      let data = JSON.parse(pokerResData.data.Data);
+      const pokerWinResult = await axios.get(ResultUrl);
       let winData = JSON.parse(pokerWinResult.data.Data);
-
-      let card, response, mid, gtype, desc;
-      for (let item of data.t1) {
-        desc = item.desc;
-        mid = item.mid;
-        gtype = item.gtype;
-        card = `${item.C1},${item.C2},${item.C3},${item.C4},${item.C5},${item.C6},${item.C7},${item.C8},${item.C9}`;
-      }
 
       let win;
       const containMid = await this.casinoresultModel.findOneAndUpdate(
@@ -46,14 +43,15 @@ export class PokerOneDayService {
         },
       );
       if (mid != 0) {
+        let response;
         if (!containMid) {
           response = {
             cards: card,
-            desc: `${desc}`,
+            desc: '',
             gtype: gtype,
             sid: '',
             mid: mid,
-            win: `${win}`,
+            win: '',
           };
           const poker20Response = new this.casinoresultModel(response);
           await poker20Response.save();

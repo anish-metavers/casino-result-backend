@@ -19,19 +19,19 @@ import { dragonTigerTwentyModule } from './dragonTigerTwentyCron/cron.module';
   imports: [
     ConfigModule.forRoot(),
     MongooseModule.forRoot(process.env.DATABASE_URL),
-    TeenTwentyModule,
     amarAkabrAnthonyModule,
     BollywoodTableModule,
     LuckySevenModule,
-    DragonTigerModule,
-    TeenpattiModule,
+    lucky7aModule,
     PokerTwentyModule,
     PokerOneDayModule,
     PokerSixModule,
     anderBaharModule,
     openTeenPattiModule,
-    lucky7aModule,
+    TeenpattiModule,
+    TeenTwentyModule,
     dragonTigerTwentyModule,
+    DragonTigerModule,
   ],
 })
 export class AppModule {}

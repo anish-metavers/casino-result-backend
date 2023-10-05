@@ -19,14 +19,17 @@ export class PokerTwentyService {
 
   @Cron('*/5 * * * * *')
   async handleCron() {
-    const poker20Url = 'http://185.180.223.49:9002/data/poker20';
-    const poker20WinResultUrl = 'http://185.180.223.49:9002/result/poker20';
+    // const poker20Url = 'http://185.180.223.49:9002/data/poker20';
+    const dataUrl = 'http://43.205.157.72:3434/casino/2020pDataBig';
+    const ResultUrl = 'http://185.18.223.49:9002/result/poker20';
     try {
-      const poker20ResData = await axios.get(poker20Url);
-      const poker20WinResult = await axios.get(poker20WinResultUrl);
+      const responseData = await axios.get(dataUrl);
+      const resultData = await axios.get(ResultUrl);
 
-      let data = JSON.parse(poker20ResData.data.Data);
-      let winData = JSON.parse(poker20WinResult.data.Data);
+      // console.log(responseData.data.data.data);
+
+      let data = JSON.parse(responseData.data.Data);
+      let winData = JSON.parse(resultData.data.Data);
 
       let card, response, mid, gtype, desc;
       for (let item of data.t1) {
@@ -37,40 +40,74 @@ export class PokerTwentyService {
       }
 
       let sid = [];
-      let items = data.t2;
-      let player1Sids = items.filter((index) => index % 2 == 0);
-      let player2Sids = items.filter((index) => index % 2 == 1);
-
       desc = desc.replaceAll('#Pair,', '#One Pair,');
-      //PLAYER 1 SID GET DATA
-      let sidStrings = desc.split('##');
-      if (sidStrings.length) {
-        if (sidStrings[0] === 'Player A') {
-          sid.push(items[0].sid);
-          const nation = sidStrings[1].split(',')[0];
-          const nation2 = sidStrings[2].split(',')[0];
-          // console.log('nation 1 :-',nation);
-          // console.log('nation 2 :-',nation2);
-          sid.push(
-            player1Sids.find((item, index) => item.nation == nation)?.sid,
-          );
-          sid.push(
-            player2Sids.find((item, index) => item.nation == nation2)?.sid,
-          );
-        } else if (sidStrings[0] === 'Player B') {
-          // console.log('hello :-',sidStrings[0])
-          sid.push(items[0].sid);
-          const nation = sidStrings[1].split(',')[0];
-          const nation2 = sidStrings[2].split(',')[0];
-          // console.log('nation :-', nation);
-          // console.log('nation 2 :-', nation2);
-          sid.push(
-            player2Sids.find((item, index) => item.nation == nation)?.sid,
-          );
-          sid.push(
-            player1Sids.find((item, index) => item.nation == nation2)?.sid,
-          );
-          // console.log('sid :',sid);
+      let winResult = desc.split('#')?.[0];
+      let playerAres = desc.split('#')?.[2];
+      let playerBres = desc.split('#')?.[4];
+      console.log('desc :', desc);
+      console.log('player :', winResult);
+      console.log('playerAres :', playerAres);
+      console.log('playerBres :', playerBres);
+
+      if (winResult == 'Player A') {
+        sid.push(11);
+        if (playerAres.includes('One Pair')) {
+          sid.push(12);
+        } else if (playerAres.includes('Two Pair')) {
+          sid.push(13);
+        } else if (playerAres.includes('Three of a Kind')) {
+          sid.push(14);
+        } else if (playerAres.includes('Straight')) {
+          sid.push(15);
+        } else if (playerAres.includes('Flush')) {
+          sid.push(16);
+        } else if (playerAres.includes('Full House')) {
+          sid.push(17);
+        } else if (playerAres.includes('Four of a Kind')) {
+          sid.push(18);
+        } else if (playerAres.includes('Straight Flush')) {
+          sid.push(19);
+        }
+      }
+
+      if (winResult == 'Player B') {
+        sid.push(21);
+        if (playerBres.includes('One Pair')) {
+          sid.push(22);
+        } else if (playerBres.includes('Two Pair')) {
+          sid.push(23);
+        } else if (playerBres.includes('Three of a Kind')) {
+          sid.push(24);
+        } else if (playerBres.includes('Straight')) {
+          sid.push(25);
+        } else if (playerBres.includes('Flush')) {
+          sid.push(26);
+        } else if (playerBres.includes('Full House')) {
+          sid.push(27);
+        } else if (playerBres.includes('Four of a Kind')) {
+          sid.push(28);
+        } else if (playerBres.includes('Straight Flush')) {
+          sid.push(29);
+        }
+      }
+
+      if (playerBres == 'Player B') {
+        if (playerBres.includes('One Pair')) {
+          sid.push(22);
+        } else if (playerBres.includes('Two Pair')) {
+          sid.push(23);
+        } else if (playerBres.includes('Three of a Kind')) {
+          sid.push(24);
+        } else if (playerBres.includes('Straight')) {
+          sid.push(25);
+        } else if (playerBres.includes('Flush')) {
+          sid.push(26);
+        } else if (playerBres.includes('Full House')) {
+          sid.push(27);
+        } else if (playerBres.includes('Four of a Kind')) {
+          sid.push(28);
+        } else if (playerBres.includes('Straight Flush')) {
+          sid.push(29);
         }
       }
 
@@ -80,8 +117,6 @@ export class PokerTwentyService {
         {
           cards: card,
           desc: `${desc}`,
-          gtype: gtype,
-          mid: mid,
           sid: sid.join(','),
           win: `${win}`,
         },

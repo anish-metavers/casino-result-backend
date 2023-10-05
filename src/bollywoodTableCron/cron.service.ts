@@ -90,7 +90,6 @@ export class BollywoodTableService {
   @Cron('*/5 * * * * *')
   async handleCron() {
     const bTableUrl = 'http://43.205.157.72:3434/casino/btDataBig';
-    // const bTableUrl = 'http://185.180.223.49:9002/data/btable';
     const bTableWinResultUrl = 'http://185.180.223.49:9002/result/btable';
     try {
       const resData = await axios.get(bTableUrl);
